@@ -1,3 +1,8 @@
+CREATE TABLE TAGTACHE(
+                         tag CONSTRAINT pk_idTagTache PRIMARY KEY,
+                         tache CONSTRAINT fk_tagTache REFERENCES TACHE
+);
+
 CREATE TABLE TACHE(
                        id CHAR(6) CONSTRAINT pk_idTache PRIMARY KEY,
                        nom VARCHAR(30) NOT NULL,
@@ -35,3 +40,9 @@ CREATE TABLE UTILISATEUR(
                             nom VARCHAR(30) NOT NULL,
                             mdp VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE TAGLIST(
+                         tag CONSTRAINT pk_idTagList PRIMARY KEY,
+                         tache CONSTRAINT fk_tagList REFERENCES TACHE
+);
+
