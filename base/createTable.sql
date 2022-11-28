@@ -38,7 +38,8 @@ CREATE TABLE LISTACHES(
 CREATE TABLE UTILISATEUR(
                             id CHAR(6) CONSTRAINT pk_utilisateur PRIMARY KEY,
                             nom VARCHAR(30) NOT NULL,
-                            mdp VARCHAR(100) NOT NULL
+                            mdp VARCHAR(100) NOT NULL,
+                            photo VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE TAGLIST(
