@@ -1,7 +1,7 @@
 <?php
 
 //gen
-$rep= __DIR__ . '/mvc2_autoloadsimple/';
+$rep= __DIR__ . '/TDL';
 
 // liste des modules à inclure
 
@@ -11,9 +11,9 @@ $rep= __DIR__ . '/mvc2_autoloadsimple/';
 
 //BD
 
-$base="";
-$login="";
-$mdp="";
+$base="mysql:host=localhost;dbname=dbnaverdier";
+$login="naverdier";
+$mdp="achanger";
 
 //Vues
 

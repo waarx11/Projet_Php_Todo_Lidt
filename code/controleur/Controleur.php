@@ -17,7 +17,7 @@ function __construct() {
 
 		switch($action) {
 
-	//pas d'action, on r�initialise 1er appel
+	//pas d'action, on rinitialise 1er appel
 		case NULL:
 			$this->Reinit();
 			break;
@@ -55,7 +55,7 @@ function __construct() {
 
 function Reinit() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
-
+	//appelle modelle il valid ce que le gate way donne
 	$dVue = array (
 		'nom' => "",
 		'age' => 0,
