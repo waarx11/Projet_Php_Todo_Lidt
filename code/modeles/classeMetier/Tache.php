@@ -4,16 +4,16 @@ namespace classeMetier;
 
 class Tache
 {
-    private $id;
-    private $nom;
+    private string $id;
+    private string $nom;
     private $dateCreation;
     private $dateFin;
-    private $repetition;
-    private $liste;
-    private $userid;
-    private $priorite;
+    private bool $repetition;
+    private string $liste;
+    private string $userid;
+    private int $priorite;
 
-    public function __construct($id,$nom, $dateFin, $repetition,$priorite ,$liste, $userid)
+    public function __construct(string $id,string $nom, $dateFin,bool $repetition,int $priorite ,string $liste, string $userid)
     {
         $this->id=$id;
         $this->dateCreation = date("dmY");

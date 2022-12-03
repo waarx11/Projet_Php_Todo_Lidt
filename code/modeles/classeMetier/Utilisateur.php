@@ -6,22 +6,29 @@ use listListe;
 
 class Utilisateur
 {
-    private $id;
-    private $nom;
+    private string $id;
+    private string $nom;
 
-    public function __construct(string $image)
+    public function __construct(string $id,string $nom)
     {
-        $this->image = $image;
+        $this->id=$id;
+        $this->nom=$nom;
     }
 
-    public function ajouteTacheListe(listListe $list, Tache $tache)
+    /**
+     * @return string
+     */
+    public function getId(): string
     {
-        $this->listListe . add(tache);
+        return $this->id;
     }
 
-    public function supprimerTacheListe(listListe $list, Tache $tache)
+    /**
+     * @return string
+     */
+    public function getNom(): string
     {
-        $this->listListe . remove(tache);
+        return $this->nom;
     }
 }
 

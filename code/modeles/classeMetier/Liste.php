@@ -9,17 +9,17 @@ include_once("GatewayTache.php");
 
 class Liste
 {
-    private $id;
-    private $nom;
-    private $visibilite;
-    private $description;
-    private $userid;
+    private string $id;
+    private string $nom;
+    private bool $visibilite;
+    private string $description;
+    private string $userid;
 
-    public function __construct($id,$nom, $visibilite, $description, $userid)
+    public function __construct(string $id,string $nom,bool $visibilite, string $description,string $userid)
     {
         $this->id=$id;
         $this->nom = $nom;
-        $this->visibiliter = $visibilite;
+        $this->visibilite = $visibilite;
         $this->description = $description;
         $this->userid=$userid;
     }
@@ -27,23 +27,16 @@ class Liste
     /**
      * @return mixed
      */
-    public function getNom()
+    public function getNom():string
     {
         return $this->nom;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getVisibiliter()
-    {
-        return $this->visibiliter;
-    }
 
     /**
      * @return mixed
      */
-    public function getDescription()
+    public function getDescription():string
     {
         return $this->description;
     }
@@ -51,7 +44,7 @@ class Liste
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId():string
     {
         return $this->id;
     }
@@ -59,7 +52,7 @@ class Liste
     /**
      * @return mixed
      */
-    public function getUserid()
+    public function getUserid():string
     {
         return $this->userid;
     }
@@ -67,7 +60,7 @@ class Liste
     /**
      * @return mixed
      */
-    public function getVisibilite()
+    public function getVisibilite():bool
     {
         return $this->visibilite;
     }

@@ -9,7 +9,7 @@ CREATE TABLE TACHE(
                        liste CONSTRAINT fk_liste REFERENCES LISTACHES
 );
 
-CREATE TABLE LISTACHES(
+CREATE TABLE LISTE(
                           id CHAR(6) CONSTRAINT pk_listTaches PRIMARY KEY,
                           nom VARCHAR(30) NOT NULL,
                           visibilite BOOL NOT NULL,
