@@ -39,10 +39,21 @@ class GatewayTache
             throw new \mysql_xdevapi\Exception("Class GatewayTache inserTache : la query n'est pas executable");
         }
     }
+
     public function supprTache(string $id)
     {
         $query = "DELETE FROM Tache WHERE id=:id;  ";
         if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))){
+            return true;
+        } else {
+            throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");
+        }
+    }
+
+    public function supprTacheByList(string $liste)
+    {
+        $query = "DELETE FROM Tache WHERE id=:id;  ";
+        if ($this->conx->executeQuery($query, array(':id' => array($liste, PDO::PARAM_STR_CHAR)))){
             return true;
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");
