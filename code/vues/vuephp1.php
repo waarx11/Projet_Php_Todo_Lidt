@@ -63,7 +63,7 @@
                     <h2>Personne - formulaire</h2>
                     <hr>
                     <!-- affichage de donn�es provenant du mod�le -->
-                    <?= $dVue['data']  ?>
+                    <?= $dVue['data']  ?? null ?>
 
 
                     <form method="post" name="myform" id"myform">

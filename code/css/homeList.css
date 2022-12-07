@@ -1,0 +1,105 @@
+body{
+    background-coLor:  #2c3e50;
+    font-famiLy: lato;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+i {
+    margin-right: 10px;
+}
+/*--------------------------Content------------------------------*/
+.hm-gradient {
+    background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+}
+.navbar .dropdown-menu a:hover {
+    color: #616161 ;
+}
+.darken-grey-text {
+    color: #2E2E2E;
+}
+
+
+
+.centeredContent{
+    padding-top: 7%;
+    display: flex;
+    justify-content: center;
+
+}
+.details{
+
+    width: 60%;
+    margin: 20px 0;
+    background-coLor: #fff;
+    padding: 30px 20px;
+    position: relative;
+    z-index: 1;
+}
+.details h2{
+    font-size: 22px;
+    text-transform: uppercase;
+    transition: 0.6s all;
+}
+.delete {
+
+    border: 1px solid darkred;
+    coLor: darkred;
+    align-content: space-between;
+}
+
+.view {
+
+    justify-content: center;
+    border: 1px solid #008000;
+    coLor:#008000;
+}
+.details p{
+    font-size: 14px;
+    transition: 0.6s all;
+}
+.details a{
+    text-decoration: none;
+    text-transform: capitalize;
+
+    padding: 6px 12px;
+    display: inline-block;
+    font-size: 14px;
+
+    transition: 0.6s all;
+}
+.details::before{
+    content: "";
+    width: 5px ;
+    height: 100%;
+    background-coLor: #ff5722;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transition: 0.6s all;
+}
+.details:hover::before{
+    width: 100%;
+}
+.details:hover h2,.details:hover p{
+    color: #fff;
+}
+.details:hover a{
+    font-weight: bold;
+}
+
+
+.delete:hover {
+    border: 1px solid darkred;
+    background-color: darkred;
+    coLor: #fff;
+}
+.view:hover {
+    border: 1px solid #008000;
+    background-color: #008000;
+    coLor: #fff;
+}

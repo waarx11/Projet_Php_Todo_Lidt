@@ -13,7 +13,7 @@ function __construct() {
 //on initialise un tableau d'erreur
 	$dVueEreur = array ();
 	try{
-		$action=$_REQUEST['action'];
+		$action=$_REQUEST['action'] ?? null;
 
 		switch($action) {
 
@@ -60,7 +60,7 @@ function Reinit() {
 		'nom' => "",
 		'age' => 0,
 		);
-		require ($rep.$vues['vuephp1']);
+		require ($rep.$vues['homeList']);
 }
 
 function ValidationFormulaire(array $dVueEreur) {

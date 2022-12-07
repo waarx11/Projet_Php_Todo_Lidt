@@ -1,8 +1,9 @@
 <?php
 
 //gen
-$rep= __DIR__ . '/TDL';
 
+$rep= __DIR__ . '/../';
+echo $rep;
 // liste des modules à inclure
 
 //$dConfig['includes']= array('controleur/Validation.php');
@@ -19,6 +20,7 @@ $mdp="achanger";
 
 $vues['erreur']='vues/erreur.php';
 $vues['vuephp1']='vues/vuephp1.php';
+$vues['homeList']='vues/homeList.php';
 
 
 ?>
