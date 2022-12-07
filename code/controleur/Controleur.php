@@ -26,7 +26,8 @@ function __construct() {
 		case "validationFormulaire":
 			$this->ValidationFormulaire($dVueEreur);
 			break;
-
+		case "connectionPage" :
+			$this->connectionPage();
 		//mauvaise action
 		default:
 		$dVueEreur[] =	"Erreur d'appel php";
@@ -61,6 +62,15 @@ function Reinit() {
 		'age' => 0,
 		);
 		require ($rep.$vues['homeList']);
+}
+function connectionPage() {
+	global $rep,$vues; // nécessaire pour utiliser variables globales
+	//appelle modelle il valid ce que le gate way donne
+	$dVue = array (
+		'nom' => "",
+		'age' => 0,
+		);
+		require ($rep.$vues['sign']);
 }
 
 function ValidationFormulaire(array $dVueEreur) {

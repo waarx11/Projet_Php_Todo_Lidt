@@ -1,4 +1,6 @@
-
+header{
+  position: sticky;
+}
 .hero {
   height: 100vh;
   width: 100%;
@@ -7,9 +9,9 @@
   background-repeat: no-repeat; }
 
 .site-navbar {
+  position: sticky;
   margin-bottom: 0px;
   z-index: 1999;
-  position: absolute;
   width: 100%;
   top: 2rem; }
   .site-navbar .container-fluid {
