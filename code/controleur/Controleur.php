@@ -28,11 +28,12 @@ function __construct() {
 			break;
 		case "connectionPage" :
 			$this->connectionPage();
+			break;
 		//mauvaise action
 		default:
-		$dVueEreur[] =	"Erreur d'appel php";
-		require ($rep.$vues['vuephp1']);
-		break;
+			$dVueEreur[] =	"Erreur d'appel php";
+			require ($rep.$vues['vuephp1']);
+			break;
 	}
 
 	} catch (PDOException $e)

@@ -1,6 +1,5 @@
 body{
     background-coLor:  #2c3e50;
-    font-famiLy: lato;
 
 }
 
@@ -25,14 +24,10 @@ i {
 
 
 .centeredContent{
-    padding-top: 7%;
     display: flex;
     justify-content: center;
-
 }
 .details{
-
-    width: 70%;
     margin: 20px 0;
     background-coLor: #fff;
     padding: 30px 20px;
