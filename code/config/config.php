@@ -11,8 +11,8 @@ $rep= __DIR__ . '/../';
 
 //BD
 
-$base="mysql:host=localhost;dbname=dbnaverdier";
-$login="naverdier";
+$base="mysql:host=localhost;dbname=dbrakhedair";
+$login="rakhedair";
 $mdp="achanger";
 
 //Vues
@@ -23,6 +23,7 @@ $vues['homeList']='vues/homeList.php';
 $vues['sign']='vues/sign.php';
 $vues['navBar']='vues/navbar.php';
 $vues['signup']='vues/signUp.php';
+$vues['tacheX']='vues/tache.php';
 
 
 ?>

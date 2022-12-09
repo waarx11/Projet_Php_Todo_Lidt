@@ -29,6 +29,9 @@ function __construct() {
 		case "connectionPage" :
 			$this->connectionPage();
 			break;
+		case "tacheX" :
+			$this->tacheX();
+			break;
 		//mauvaise action
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
@@ -72,6 +75,17 @@ function connectionPage() {
 		'age' => 0,
 		);
 		require ($rep.$vues['sign']);
+}
+
+
+function tacheX() {
+	global $rep,$vues; // nécessaire pour utiliser variables globales
+	//appelle modelle il valid ce que le gate way donne
+	$dVue = array (
+		'nom' => "",
+		'age' => 0,
+		);
+		require ($rep.$vues['tacheX']);
 }
 
 function ValidationFormulaire(array $dVueEreur) {
