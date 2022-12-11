@@ -37,20 +37,23 @@ class GatewayTache
         }
     }
 
-    public function supprTache(string $id)
+    public function supprTachePublic(string $id)
     {
-        $query = "DELETE FROM Tache WHERE id=:id;";
+        $query = "DELETE FROM Tache WHERE id=:id AND userid is NULL ;";
+
         if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))){
             return true;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");
+            throw new Exception("Error delete an task not exist or not belong to you !!");
         }
     }
-
-    public function supprTacheByList(string $liste)
+    public function deleteTacheByList(string $userid,string $liste)
     {
-        $query = "DELETE FROM Tache WHERE id=:id;";
-        if ($this->conx->executeQuery($query, array(':id' => array($liste, PDO::PARAM_INT)))){
+        $query = "DELETE FROM Tache WHERE userid=:userid AND liste=:liste;";
+        if ($this->conx->executeQuery($query, array(
+            ':userid' => array($userid, PDO::PARAM_STR_CHAR),
+            ':liste' => array($liste, PDO::PARAM_STR_CHAR)
+            ))){
             return true;
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");

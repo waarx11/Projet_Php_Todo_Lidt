@@ -20,11 +20,6 @@ function __construct() {
 		case NULL:
 			$this->Reinit();
 			break;
-
-
-		case "validationFormulaire":
-			$this->ValidationFormulaire($dVueEreur);
-			break;
 		case "connectionPage" :
 			$this->connectionPage();
 			break;
@@ -33,10 +28,12 @@ function __construct() {
 				$idListeVerif = Validation::validateInt($idList);
 				$this->tacheX($idListeVerif);
 				break;
+		case "tacheXDelet" :
+			$idTask=$_REQUEST['idTask'] ?? null;
+			$idTaskVerif = Validation::validateInt($idTask);
+			$this->tacheXDelet($idTaskVerif);
+			break;
 
-
-
-		//mauvaise action
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
 			require ($rep.$vues['vuephp1']);
@@ -82,12 +79,21 @@ function connectionPage() {
 function tacheX($idList) {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 	//appelle modelle il valid ce que le gate way donne
-	$dVue =  ModelTache::getTachesPublic($idList);
+	$dVue =  ModelVisiteur::getTachesPublic($idList);
 
 	$listName =  $idList;
 
 	require ($rep.$vues['tacheX']);
 }
+
+private function tacheXDelet($idTask)
+{
+	global $rep,$vues; // nécessaire pour utiliser variables globales
+	//appelle modelle il valid ce que le gate way donne
+	ModelVisiteur::removeTask($idTask);
+
+}
+
 
 function ValidationFormulaire(array $dVueEreur) {
 	global $rep,$vues;
@@ -108,6 +114,8 @@ function ValidationFormulaire(array $dVueEreur) {
 	);
 		require ($rep.$vues['vuephp1']);
 }
+
+
 
 }//fin class
 

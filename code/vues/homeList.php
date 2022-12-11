@@ -54,7 +54,7 @@
                             ?>
                             <form>
                                 <div class="col-md-3" >
-                                    <div class="details detailsAdd" style="text-align: center">
+                                    <div class=" detailsAdd" style="text-align: center">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" style="all:unset; cursor: pointer"><p style="font-size: 70px">+</p></button>
                                         <div class="modal fade" id="modalAdd" tabindex="-1000" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
