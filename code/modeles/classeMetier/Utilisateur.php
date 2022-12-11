@@ -2,17 +2,35 @@
 
 namespace classeMetier;
 
-use listListe;
 
 class Utilisateur
 {
+
     private string $id;
     private string $nom;
+    private string $mail;
+    private string $role;
 
-    public function __construct(string $id,string $nom)
+    /**
+     * @return string
+     */
+    public function getMail(): string
+    {
+        return $this->mail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function __construct(string $id,string $role)
     {
         $this->id=$id;
-        $this->nom=$nom;
+        $this->role=$role;
     }
 
     /**
@@ -29,6 +47,21 @@ class Utilisateur
     public function getNom(): string
     {
         return $this->nom;
+    }
+
+    /**
+     * @param string $mail
+     */
+    public function setMail(string $mail): void
+    {
+        $this->mail = $mail;
+    }
+    /**
+     * @param string $nom
+     */
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
     }
 }
 

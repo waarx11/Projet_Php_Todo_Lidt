@@ -1,25 +1,27 @@
 <?php
 
-namespace classeMetier;
 
 class Tache
 {
-    private string $id;
+    private int $id;
     private string $nom;
     private $dateCreation;
     private $dateFin;
     private bool $repetition;
+    private bool $checked;
     private string $liste;
     private string $userid;
+
     private int $priorite;
 
-    public function __construct(string $id,string $nom, $dateFin,bool $repetition,int $priorite ,string $liste, string $userid)
+    public function __construct(int $id,string $nom, $dateCreation,$dateFin,bool $repetition,int $priorite ,bool $checked, string $userid, string $liste)
     {
         $this->id=$id;
-        $this->dateCreation = date("dmY");
+        $this->dateCreation = $dateCreation;
         $this->nom = $nom;
         $this->dateFin = $dateFin;
         $this->repetition = $repetition;
+        $this->checked = $checked;
         $this->liste=$liste;
         $this->userid=$userid;
         $this->priorite=$priorite;
@@ -87,5 +89,13 @@ class Tache
     public function getListe()
     {
         return $this->liste;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getChecked(): bool
+    {
+        return $this->checked;
     }
 }

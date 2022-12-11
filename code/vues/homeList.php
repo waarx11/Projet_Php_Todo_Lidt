@@ -26,13 +26,14 @@
                     <div class="container">
                         <div class="row">
                         <?php
-                        for ($k = 0 ; $k < 10; $k++){?>
+                        foreach ($dVue as $list){?>
                             <div class="col-md-3">
-                                <div class="details">
-                                    <h2>heading</h2>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                                <div class="details" onmouseover="precent()">
 
-                                    <a href="index.php?action=tacheX" class="view">
+                                    <h2><?= $list->getNom() ?></h2>
+                                    <p><?= $list->getDescription() ?></p>
+
+                                    <a href="index.php?action=tacheX&idList=<?=$list->getId()?>" class="view">
                                         <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
@@ -51,15 +52,47 @@
                         <?php
                             }
                             ?>
+                                <div class="col-md-3" >
+                                    <div class="details detailsAdd" style="text-align: center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" style="all:unset; cursor: pointer"><p style="font-size: 70px">+</p></button>
+                                        <div class="modal fade" id="modalAdd" tabindex="-1000" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalAddTitre">Modal title</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" >
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">Nom</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="Nom de la liste" aria-label="Username" aria-describedby="basic-addon1">
+                                                        </div>
 
-                            
-
+                                                        <div class="input-group mb-3">
+                                                            <select class="custom-select" id="inputGroupSelect01">
+                                                                <option selected>Public</option>
+                                                                <option value="1">Private</option>
+                                                            </select>
+                                                        </div>
+                                                        <textarea class="form-control" placeholder="Description" aria-label="description"></textarea>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        <button type="button" class="btn btn-primary">Sauvegarder</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-
                 <?php
             }
             else {
@@ -69,4 +102,10 @@
         ?>
 
     </body>
+<!--<script>-->
+<!--    function precent(){-->
+<!--        this.before.setAttributes('width','100%');-->
+<!---->
+<!--    }-->
+<!--</script>-->
 </html>

@@ -1,5 +1,4 @@
 <?php
-namespace gateway;
 
 class Connection extends PDO
 {

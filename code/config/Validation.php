@@ -50,6 +50,8 @@ throw new Exception('pas d\'action');
         }
     }
 
+
+
     /* Fonction de validation du nom avec 1 caractère minimum et 25 maximum retourne la chaine filtrée */
     public static function validateName(string $username){
         if ($username == NULL){
@@ -113,6 +115,15 @@ throw new Exception('pas d\'action');
         }
 
     }
+    public static function validateTachePublic( $list){
+        foreach ($list as $key => $list){
+            if(!$list->getVisibilite()){
+                unset($list[$key]);
+            }
+        }
+
+    }
+
 
 }
 ?>

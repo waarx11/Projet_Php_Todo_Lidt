@@ -1,13 +1,11 @@
 <header>
             <nav class="navbar sticky-top  navbar-dark navbar-expand-lg myNav"  >
-                <a class="navbar-brand title" href="#">TDL</a>
+                <a class="navbar-brand title" href="index.php?action">TDL</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
                     <div class="navbar-nav ml-auto" style="float: right;">
-                        <a class="nav-item nav-link " href="index.php">Home </a>
-                        <a class="nav-item nav-link" href="#">Add</a>
                         <a class="nav-item nav-link" href="#" style=" cursor: default;"></a>
                         <a class="nav-item ">
                             <button class="btn btn-outline-success" type="button">Signup</button>

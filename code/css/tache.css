@@ -168,3 +168,7 @@ i {
 .card-footer{
     background-color: #fff;
 }
+
+.strikeThrough:checked + .strikeThroughText p{
+    text-decoration: line-through;
+}

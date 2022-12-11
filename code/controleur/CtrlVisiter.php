@@ -1,6 +1,5 @@
 <?php
-
-class Controleur {
+class CtrlVisiter {
 
 function __construct() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
@@ -30,8 +29,13 @@ function __construct() {
 			$this->connectionPage();
 			break;
 		case "tacheX" :
-			$this->tacheX();
-			break;
+				$idList=$_REQUEST['idList'] ?? null;
+				$idListeVerif = Validation::validateInt($idList);
+				$this->tacheX($idListeVerif);
+				break;
+
+
+
 		//mauvaise action
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
@@ -48,7 +52,7 @@ function __construct() {
 	}
 	catch (Exception $e2)
 		{
-		$dVueEreur[] =	"Erreur inattendue!!! ";
+		$dVueEreur[] =	$e2->getMessage();
 		require ($rep.$vues['erreur']);
 		}
 
@@ -60,12 +64,9 @@ function __construct() {
 
 function Reinit() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
-	//appelle modelle il valid ce que le gate way donne
-	$dVue = array (
-		'nom' => "",
-		'age' => 0,
-		);
-		require ($rep.$vues['homeList']);
+	$dVue = ModelVisiteur::getPublicList();
+
+	require ($rep.$vues['homeList']);
 }
 function connectionPage() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
@@ -74,18 +75,18 @@ function connectionPage() {
 		'nom' => "",
 		'age' => 0,
 		);
-		require ($rep.$vues['sign']);
+		require ($rep.$vues['signUtilisateur']);
 }
 
 
-function tacheX() {
+function tacheX($idList) {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 	//appelle modelle il valid ce que le gate way donne
-	$dVue = array (
-		'nom' => "",
-		'age' => 0,
-		);
-		require ($rep.$vues['tacheX']);
+	$dVue =  ModelTache::getTachesPublic($idList);
+
+	$listName =  $idList;
+
+	require ($rep.$vues['tacheX']);
 }
 
 function ValidationFormulaire(array $dVueEreur) {

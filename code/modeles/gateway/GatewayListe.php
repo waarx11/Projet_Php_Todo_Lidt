@@ -1,11 +1,5 @@
 <?php
 
-namespace gateway;
-
-use classeMetier\Liste;
-
-require_once('Connection.php');
-
 class GatewayListe
 {
     private Connection $conx;
@@ -33,17 +27,17 @@ class GatewayListe
     public function supprList(string $id)
     {
         $query = "DELETE FROM LISTE WHERE id=:id;  ";
-        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))){
+        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))){
             return true;
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe supprList : la query n'est pas executable");
         }
     }
 
-    private function resultsToArrayList($results):array{
+    private function resultsToArrayList(array $results):array{
         $resArray=Array();
         Foreach ($results as $row) { //parcours
-            $resArray[$row['id']]=new Liste($row['id'],$row['nom'],(bool)$row['visibilite'],$row['description'],$row['userid']);
+            $resArray[ $row['id'] ]=new Liste( ((int)$row['id']),$row['nom'], ((bool)$row['visibilite']) , $row['description'], (string)$row['userid']);
         }
         return $resArray;
     }
@@ -52,26 +46,29 @@ class GatewayListe
     {
         $query = "SELECT * FROM LISTE";
         if ($this->conx->executeQuery($query)) {
-            return  resultsToArrayTache($this->conx->getResults());
+            return $this->resultsToArrayList($this->conx->getResults());
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe displayAll : la query n'est pas executable");
         }
     }
+
     public function displayAllPublic(): array
     {
         $query = "SELECT * FROM LISTE where visibilite=true";
-        if ($this->conx->executeQuery($query)) {
-            return  resultsToArrayTache($this->conx->getResults());
+        $this->conx->executeQuery($query);
+        $res=$this->resultsToArrayList($this->conx->getResults());
+        if ($res!=null) {
+            return $res;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe displayAllPublic : la query n'est pas executable");
+            throw new Exception("No task for you ");
         }
     }
 
     public function findById($id): array
     {
         $query = "SELECT * FROM LISTE WHERE id=:id";
-        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))) {
-            return resultsToArrayTache($this->conx->getResults());
+        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))) {
+            return $this->resultsToArrayList($this->conx->getResults());
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe findById : la query n'est pas executable");
         }
@@ -81,7 +78,7 @@ class GatewayListe
     {
         $query = "SELECT * FROM LISTE WHERE name=:name";
         if ($this->conx->executeQuery($query, array(':name' => array($name, PDO::PARAM_STR_CHAR)))) {
-            return resultsToArrayTache($this->conx->getResults());
+            return $this->resultsToArrayList($this->conx->getResults());
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe findByName : la query n'est pas executable");
         }
@@ -90,7 +87,7 @@ class GatewayListe
     {
         $query = "SELECT * FROM LISTE WHERE name=:name AND visibilite=true";
         if ($this->conx->executeQuery($query, array(':name' => array($name, PDO::PARAM_STR_CHAR)))) {
-            return resultsToArrayTache($this->conx->getResults());
+            return $this->resultsToArrayList($this->conx->getResults());
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe findByNamePublic : la query n'est pas executable");
         }
@@ -100,7 +97,7 @@ class GatewayListe
     {
         $query = "SELECT * FROM LISTE WHERE usrid=:usrid";
         if ($this->conx->executeQuery($query, array(':name' => array($usrid, PDO::PARAM_STR_CHAR)))) {
-            return resultsToArrayTache($this->conx->getResults());
+            return $this->resultsToArrayList($this->conx->getResults());
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe findByUser : la query n'est pas executable");
         }

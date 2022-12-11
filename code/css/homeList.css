@@ -11,17 +11,11 @@ i {
     margin-right: 10px;
 }
 /*--------------------------Content------------------------------*/
-.hm-gradient {
-    background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
-}
-.navbar .dropdown-menu a:hover {
-    color: #616161 ;
-}
-.darken-grey-text {
-    color: #2E2E2E;
-}
 
 
+.modal-backdrop {
+    z-index: 0;
+}
 
 .centeredContent{
     display: flex;
@@ -30,7 +24,14 @@ i {
 .details{
     margin: 20px 0;
     background-coLor: #fff;
-    padding: 30px 20px;
+    padding: 20px 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.detailsAdd{
+    width: 30%;
+    padding: 5px 0px !important;
     position: relative;
     z-index: 1;
 }
@@ -76,6 +77,8 @@ i {
     top: 0;
     z-index: -1;
     transition: 0.6s all;
+    
+    
 }
 .details:hover::before{
     width: 100%;
@@ -92,6 +95,7 @@ i {
     border: 1px solid darkred;
     background-color: darkred;
     coLor: #fff;
+    
 }
 .view:hover {
     border: 1px solid #008000;
