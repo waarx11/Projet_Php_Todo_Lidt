@@ -15,6 +15,7 @@
     ?>
     <section class="gradient-custom">
         <div class="container">
+            <form>
             <div class=" d-flex justify-content-center ">
                 <div class="col-xl-6">
                     <div class="card bg-dark text-white" style="border-radius: 1rem;">
@@ -27,17 +28,23 @@
 
                     
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">@</span>
-                                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <p>
+                                        <?php if (isset($errUserName)) { echo $errUserName; } ?>
+                                        <label for="Nom">Nom</label><br>
+                                        <input type="text" name="UserName" id="UserName" placeholder="Nom"<?php if (isset($userName)) { echo 'value="'.$userName.'"';}  ?>>
+                                    </p>
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">@</span>
-                                    <input type="password"  id="typePasswordX" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                                    <p>
+                                        <?php if (isset($errPassword)) { echo $errPassword; } ?>
+                                        <label for="Nom">Password</label><br>
+                                        <input type="password"  id="typePasswordX" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"<?php if (isset($password)) { echo 'value="'.$password.'"';}  ?>>
+                                    </p>
                                 </div>
 
 
-                                <button class="btn btn-outline-light btn-lg px-5" type="submit">SignUp</button>
+                                <button class="btn btn-outline-light btn-lg px-5" name="isSubmit" type="submit">SignUp</button>
 
                                 <div class="d-flex justify-content-center text-center mt-4 pt-1">
                                     <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
@@ -46,12 +53,14 @@
                                 </div>
 
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
+                <?php if (isset($userName) && isset($password) && isset($description)){
+                    //echo "<strong>Les informations saisies sont :</strong> <br><strong>User name :</strong> $userName <br> <strong>Visibiliter :</strong> $visibilite <br> <strong>Description :</strong> $description <br> <strong>La liste a été crée est ajouter au home <strong>";
+                } ?>
+            </form>
         </div>
     </section>
 
@@ -83,5 +92,22 @@
 //    }
 //}
 //?>
+    <?php
+    if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
+
+        if (empty($_POST['userName'])) {
+            $errUserName='Il faut renseigné le ';
+        } else {
+            $userName=$_POST['userName'];
+        }
+
+        if (empty($_POST['password'])) {
+            $errPassword='Il faut renseigné le ';
+        } else {
+            $password=$_POST['password'];
+        }
+    }
+    ?>
+
 </body>
 </html>
