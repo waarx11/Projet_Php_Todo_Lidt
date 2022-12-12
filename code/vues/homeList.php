@@ -28,6 +28,7 @@
                         <?php
                         foreach ($dVue as $list){?>
                             <div class="col-md-3">
+
                                 <div class="details" onmouseover="precent()">
 
                                     <h2><?= $list->getNom() ?></h2>
@@ -77,8 +78,8 @@
                                                         </div>
 
                                                         <div class="input-group mb-3">
-                                                            <select class="custom-select" id="inputGroupSelect01">
-                                                                <option selected>Public</option>
+                                                            <select name="visibilite" class="custom-select" id="inputGroupSelect01">
+                                                                <option value="0" selected>Public</option>
                                                                 <option value="1">Private</option>
                                                             </select>
                                                         </div>
@@ -89,7 +90,7 @@
                                                         </p>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                        <button type="button" id="Envoie" class="btn btn-primary">Sauvegarder</button>
+                                                        <button type="button" id="isSubmit" class="btn btn-primary">Sauvegarder</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,8 +112,8 @@
                 print ("utilisation anormale de la homeList");
             }
         ?>
-        <?php
-        if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
+<?php
+    if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
 
         if (empty($_POST['nom'])) {
         $errNom='Il faut renseigné le ';
@@ -120,10 +121,10 @@
         $nom=$_POST['nom'];
         }
 
-        if (empty($_POST['visibilite'])) {
-        $errVisibilite='Il faut renseigné la ';
+        if ($_POST['visibilite']=="0") {
+            $visibilite=$_POST['Public'];
         } else {
-        $visibilite=$_POST['visibilite'];
+            $visibilite=$_POST['Priver'];
         }
 
         if (empty($_POST['description'])) {
@@ -131,15 +132,8 @@
         } else {
         $description=$_POST['description'];
         }
-        //if(!empty($nom) && !empty($prenom) && !empty($email) && !empty($dateNaissance)){
-        //$p1 = new Personne($nom, $prenom, $dateNaissance, $email);
-        //$tab[]=$p1;
-        //}
-        //if(!empty($tab)){
-        //$tab_serialiser = urlencode(addslashes(serialize($tab)));
-        //echo "<a href='vueDesPersonnes.php?PersonnesList=$tab_serialiser' title='Envoyer'>Envoyer des données via une url</a>";
-        }
-    ?>
+    }
+?>
 
     </body>
 <!--<script>-->

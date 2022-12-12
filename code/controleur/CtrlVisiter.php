@@ -4,8 +4,6 @@ class CtrlVisiter {
 function __construct() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 // on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
-	session_start();
-
 
 //debut
 
@@ -24,15 +22,19 @@ function __construct() {
 			$this->connectionPage();
 			break;
 		case "tacheX" :
-				$idList=$_REQUEST['idList'] ?? null;
-				$idListeVerif = Validation::validateInt($idList);
-				$this->tacheX($idListeVerif);
-				break;
+			$idList=$_REQUEST['idList'] ?? null;
+			$idListeVerif = Validation::validateInt($idList);
+			$this->tacheX($idListeVerif);
+			break;
 		case "tacheXDelet" :
 			$idTask=$_REQUEST['idTask'] ?? null;
 			$idTaskVerif = Validation::validateInt($idTask);
 			$this->tacheXDelet($idTaskVerif);
 			break;
+
+		case "ajoutList":
+			require ($rep.$vues['homeList']);
+			$this->listexInsert($nom,$visibilite,$description);
 
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
@@ -80,24 +82,28 @@ function tacheX($idList) {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 	//appelle modelle il valid ce que le gate way donne
 	$dVue =  ModelVisiteur::getTachesPublic($idList);
-
 	$listName =  $idList;
-
 	require ($rep.$vues['tacheX']);
 }
 
-private function tacheXDelet($idTask)
-{
-	global $rep,$vues; // nécessaire pour utiliser variables globales
-	//appelle modelle il valid ce que le gate way donne
-	ModelVisiteur::removeTask($idTask);
+	private function tacheXDelet($idTask)
+	{
+		global $rep,$vues; // nécessaire pour utiliser variables globales
+		//appelle modelle il valid ce que le gate way donne
+		//$_server pour avoir le lien
+		ModelVisiteur::removeTask($idTask);
+		//header.location; pour changer le location
+	}
 
-}
+	private function listexInsert($nom,$visibilite,$description)
+	{
+		global $rep,$vues; // nécessaire pour utiliser variables globales
+		ModelVisiteur::createList();
+	}
 
 
 function ValidationFormulaire(array $dVueEreur) {
 	global $rep,$vues;
-
 
 	//si exception, ca remonte !!!
 	$nom=$_POST['txtNom']; // txtNom = nom du champ texte dans le formulaire
@@ -115,8 +121,5 @@ function ValidationFormulaire(array $dVueEreur) {
 		require ($rep.$vues['vuephp1']);
 }
 
-
-
 }//fin class
-
 ?>

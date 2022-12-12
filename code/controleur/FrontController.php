@@ -2,10 +2,13 @@
 
 class FrontController
 {
+
     function __construct()
     {
 
         global $rep,$vues;
+        session_start();
+
 
         try {
             $string_actor = '';

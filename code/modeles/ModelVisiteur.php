@@ -40,12 +40,12 @@ class ModelVisiteur
 
     public static function createList(){
         $gwListe = new GatewayListe();
-        $id = Validation::validateString($_POST["id"]);
         $nom = Validation::validateString($_POST["nom"]);
         $visibilite = Validation::validateVisibiliter($_POST["visibilite"]);
         $description = Validation::validateString($_POST["description"]);
-        $userid = $_POST["userid"];
-        $gwListe->inserListe(new Liste($id, $nom, $visibilite, $description, $userid));
+        $userid = NULL;
+        $id=0;
+        $gwListe->inserListe(new Liste($id,$nom, $visibilite, $description, $userid));
     }
 
     public static function removeList($idList){
