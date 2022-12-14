@@ -13,18 +13,21 @@ class FrontController
         try {
             $string_actor = '';
             $listeActions = array(
-                'Utilisateur' => array('action1', 'action2'),
+                'Utilisateur' => array('action1', 'action2','connected'),
                 'Admin' => array('action3', 'action4'),
             );
-            $action = $_REQUEST['action']?? null;
+            $action = $_REQUEST['action'] ?? null;
             $string_actor = FrontController::byWho($action, $listeActions);
             if ($string_actor != NULL) {
-                $mdl = new ('Model'.$string_actor);
-                $actor = $mdl.isConnected();
+
+                $mdlClass=('Model'.$string_actor);
+                $mdl = new $mdlClass;
+                $actor = $mdl->isConnected();
                 if ($actor == NULL) {
                     require('sign' . $string_actor);
                 } else {
-                    $ctrl = new ('Ctrl' . $string_actor);
+                    $trlClass=('Ctrl' . $string_actor);
+                    $ctrl = new $trlClass ;
                 }
             }
             else{

@@ -5,7 +5,7 @@ class CtrlUtilisateur
     function __construct() {
         global $rep,$vues; // nécessaire pour utiliser variables globales
 // on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
-        session_start();
+        //session_start();
 
 
 //debut
@@ -15,10 +15,9 @@ class CtrlUtilisateur
         try{
             $action=$_REQUEST['action'] ?? null;
 
-            switch($action) {
-
+            switch($action){
                 //pas d'action, on rinitialise 1er appel
-                case NULL:
+                case 'connected':
                     $this->Reinit();
                     break;
                 case "connectionPage" :
@@ -62,8 +61,11 @@ class CtrlUtilisateur
     function Reinit() {
         global $rep,$vues; // nécessaire pour utiliser variables globales
         $dVue = ModelVisiteur::getPublicList();
-
         require ($rep.$vues['homeList']);
+    }
+    function checkedPrc($id){
+
+        return ModelVisiteur::getCheckedPrc($id);
     }
 
 }

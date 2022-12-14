@@ -43,10 +43,7 @@ throw new Exception('pas d\'action');
         if ($title == NULL) {
             throw new Exception("Le titre ne peut être vide");
         } else {
-            if (!preg_match('/[a-zA-Z0-9].{4,50}/', $title)) {
-                throw new Exception("Le titre '".$title."' n'est pas valide. Le titre doit contenir au moins 5 caractère, et doit commencer par une lettre ou un chiffre.");
-            }
-            return Validation::validateString($title);
+            return $title;
         }
     }
 
@@ -100,10 +97,7 @@ throw new Exception('pas d\'action');
         if ($password == NULL) {
             throw new Exception("Le mot de passe ne peut être vide");
         } else {
-            if (!preg_match('/^.{5,}$/', $password)) {
-                throw new Exception("Le mot de passe n'est pas valide : 5 caractères exigés");
-            }
-            return Validation::validateString($password);
+            return $password;
         }
     }
 

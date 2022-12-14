@@ -1,9 +1,10 @@
 USE `dbrakhedair`;
-INSERT INTO LISTE (id,nom, visibilite, description, userid) VALUES (1,'listeDeCourse', FALSE, 'Ceci est ma liste de course est je suis priver', 'rami');
-INSERT INTO LISTE (id,nom, visibilite, description, userid) VALUES (2,'Cours', TRUE, 'ceci est ma liste de cours à faire est je suis public', 'rami');
-
-INSERT INTO LISTE (id, nom, visibilite, description, userid) VALUES (3,'Pub1', TRUE, 'Je suis une liste publique', NULL);
-INSERT INTO LISTE (id, nom, visibilite, description, userid) VALUES (4,'Pub2', TRUE, 'Je suis une autre liste publique', NULL);
+-- INSERT INTO UTILISATEUR (id,mail,nom, roleU, mdp) VALUES ('rami','ramikhdair@gmail.com','Utilisateur', '0000');
+-- INSERT INTO LISTE (id,nom, visibilite, description, userid) VALUES (1,'listeDeCourse', FALSE, 'Ceci est ma liste de course est je suis priver', 'rami');
+-- INSERT INTO LISTE (id,nom, visibilite, description, userid) VALUES (2,'Cours', TRUE, 'ceci est ma liste de cours à faire est je suis public', 'rami');
+--
+-- INSERT INTO LISTE (id, nom, visibilite, description, userid) VALUES (3,'Pub1', TRUE, 'Je suis une liste publique', NULL);
+-- INSERT INTO LISTE (id, nom, visibilite, description, userid) VALUES (4,'Pub2', TRUE, 'Je suis une autre liste publique', NULL);
 
 INSERT INTO TACHE (nom, priorite, dateCreation, dateFin, repete,checked, userid, liste) VALUES ('riz', 3, current_date, current_date+4, FALSE, FALSE,'rami', '1');
 INSERT INTO TACHE (nom, priorite, dateCreation, dateFin, repete, checked,userid, liste) VALUES ('pate', 3, current_date, current_date+1, TRUE,FALSE, 'rami', '1');

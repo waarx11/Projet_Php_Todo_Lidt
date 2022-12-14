@@ -14,22 +14,79 @@
     <body>
         <?php 
             require ($rep.$vues['navBar']);
+
         ?>
         <?php
-
-
         // on v�rifie les donn�es provenant du mod�le
         if (isset($dVue))
             {?>
+
 
                 <div class="centeredContent">
                     <div class="container">
                         <div class="row">
                         <?php
-                        foreach ($dVue as $list){?>
+                        foreach ($dVue as $list){
+                            ?>
                             <div class="col-md-3">
 
-                                <div class="details" onmouseover="precent()">
+                                <div class="details<?php echo $list->getId()?>">
+
+                                    <style>
+                                        .details<?php echo $list->getId()?>{
+                                            margin: 20px 0;
+                                            background-coLor: #fff;
+                                            padding: 20px 10px;
+                                            position: relative;
+                                            z-index: 1;
+                                        }
+
+                                        .details<?php echo $list->getId()?> h2{
+                                            font-size: 22px;
+                                            text-transform: uppercase;
+                                            transition: 0.6s all;
+                                        }
+
+
+                                        .details<?php echo $list->getId()?> p{
+                                            font-size: 14px;
+                                            transition: 0.6s all;
+                                        }
+                                        .details<?php echo $list->getId()?> a{
+                                            text-decoration: none;
+                                            text-transform: capitalize;
+
+                                            padding: 6px 12px;
+                                            display: inline-block;
+                                            font-size: 14px;
+
+                                            transition: 0.6s all;
+                                        }
+                                        .details<?php echo $list->getId()?>::before{
+                                            content: "";
+                                            width: 5px ;
+                                            height: 100%;
+                                            background-coLor: #ff5722;
+                                            position: absolute;
+                                            left: 0;
+                                            top: 0;
+                                            z-index: -1;
+                                            transition: 0.6s all;
+
+
+                                        }
+                                        .details<?php echo $list->getId()?>:hover::before{
+                                            width:   <?php echo $this->checkedPrc($list->getId())?>%;
+
+                                        }
+                                        .details<?php echo $list->getId()?>:hover h2,.details:hover p{
+                                            color: #76bcd6;
+                                        }
+                                        .details<?php echo $list->getId()?>:hover a{
+                                            font-weight: bold;
+                                        }
+
+                                    </style>
 
                                     <h2><?= $list->getNom() ?></h2>
                                     <p><?= $list->getDescription() ?></p>
@@ -136,10 +193,4 @@
 ?>
 
     </body>
-<!--<script>-->
-<!--    function precent(){-->
-<!--        this.before.setAttributes('width','100%');-->
-<!---->
-<!--    }-->
-<!--</script>-->
 </html>

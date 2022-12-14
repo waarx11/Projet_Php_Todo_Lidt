@@ -9,6 +9,7 @@ class GatewayTache
         global $base,$login,$mdp;
         $this->conx = new Connection($base, $login,$mdp);
     }
+
     private function resultsToArrayTache(array $results):array{
         $resArray=Array();
         Foreach ($results as $row) { //parcours
@@ -36,22 +37,37 @@ class GatewayTache
             throw new \mysql_xdevapi\Exception("Class GatewayTache inserTache : la query n'est pas executable");
         }
     }
-
-    public function supprTachePublic(string $id)
+    public function updateCheckTache(string $id,$idUser)
     {
-        $query = "DELETE FROM Tache WHERE id=:id AND userid is NULL ;";
+        $query = "UPDATE TACHE t,LISTE l SET t.checked = not t.checked WHERE t.id=:id AND t.liste=l.id AND (l.visibilite OR l.userid=:user);";
 
-        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))){
+        if ($this->conx->executeQuery($query, array(
+            ':id' => array($id, PDO::PARAM_INT),
+            ':user' => array($idUser ,$idUser == null ? PDO::PARAM_NULL :  PDO::PARAM_STR_CHAR)
+
+        ))){
             return true;
         } else {
             throw new Exception("Error delete an task not exist or not belong to you !!");
         }
     }
-    public function deleteTacheByList(string $userid,string $liste)
+    public function supprTachePublic(string $id,$idUser)
     {
-        $query = "DELETE FROM Tache WHERE userid=:userid AND liste=:liste;";
+        $query = "DELETE FROM TACHE WHERE id=:id AND (userid=:user OR userid IS NULL ) ;";
         if ($this->conx->executeQuery($query, array(
-            ':userid' => array($userid, PDO::PARAM_STR_CHAR),
+            ':id' => array($id, PDO::PARAM_INT),
+            ':user' => array($idUser , $idUser == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)
+
+        ))){
+            return true;
+        } else {
+            throw new Exception("Error delete an task not exist or not belong to you !!");
+        }
+    }
+    public function deleteTacheByList(string $liste)
+    {
+        $query = "DELETE FROM TACHE WHERE liste=:liste;";
+        if ($this->conx->executeQuery($query, array(
             ':liste' => array($liste, PDO::PARAM_STR_CHAR)
             ))){
             return true;
@@ -60,62 +76,19 @@ class GatewayTache
         }
     }
 
-    public function displayAll(): array
+    public function findByIdListOrdered($list,$idUser): array
     {
-        $query = "SELECT * FROM TACHE";
-        if ($this->conx->executeQuery($query)) {
-            return $this->conx->getResults();
-        } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache displayAll : la query n'est pas executable");
-        }
-    }
-
-    public function findByIdList($list): array
-    {
-
-        $query = "SELECT * FROM TACHE WHERE liste=:list";
-
-        if ($this->conx->executeQuery($query, array(':list' => array($list, PDO::PARAM_INT)))) {
+        $query = "SELECT t.* FROM TACHE t, LISTE l WHERE t.liste=:list AND t.liste=l.id AND (l.visibilite OR l.userid=:user) ORDER BY priorite ASC, dateFin asc";
+        if($this->conx->executeQuery($query, array(
+            ':list' => array($list, PDO::PARAM_INT),
+            ':user' => array($idUser, $idUser == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)
+        ))){
             return $this->resultsToArrayTache($this->conx->getResults());
-        } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache findByIdList : la query n'est pas executable");
         }
-    }
-    public function findByIdListOrdered($list): array
-    {
-        $query = "SELECT * FROM TACHE WHERE liste=:list ORDER BY priorite ASC, dateFin asc";
-        if ($this->conx->executeQuery($query, array(':list' => array($list, PDO::PARAM_INT)))) {
-            return $this->resultsToArrayTache($this->conx->getResults());
-        } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache findByIdListOrdered : la query n'est pas executable");
-        }
-    }
-
-    public function findByIdListOrderedPublic($list): array
-    {
-        $query = "SELECT t.* FROM TACHE t, LISTE l WHERE t.liste=:list AND t.liste=l.id AND l.visibilite ORDER BY priorite ASC, dateFin asc";
-        $this->conx->executeQuery($query, array(':list' => array($list, PDO::PARAM_INT)));
-        $res=$this->resultsToArrayTache($this->conx->getResults());
-        if ($res!=null) {
-            return $res;
-        } else {
+         else {
             throw new Exception("No task for you ");
         }
     }
-
-
-
-    public function findById($id): array
-    {
-        $query = "SELECT * FROM TACHE WHERE id=:id";
-        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))) {
-            return resultsToArrayTache($this->conx->getResults());
-        } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache findById : la query n'est pas executable");
-        }
-    }
-
-
 
     //a voir pour barre de recherche
     public function findByName(string $name)

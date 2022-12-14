@@ -56,7 +56,7 @@
                                                 }
                                                 ?>
 
-                                            />
+                                                   onchange="updateBaseCheck(<?php echo $tache->getId()?>)" />
 
                                           </div>
                                       </div>
@@ -75,20 +75,14 @@
                                         <div class="widget-subheading">
                                             <i><?=$tache->getDateCreation()?></i> / <?=$tache->getDateFin()?> <br> <p>Crée par <?=$tache->getUser()?></p> </i>
                                           </div>
-
-
-                                       
                                       </div>
                                         <div class="widget-content-right">
-                                            <a href="index.php?action=tacheXDelet&idTask=<?=$tache->getId()?>" style="all: unset; cursor: pointer">
-                                              <button class="border-0 btn-transition btn btn-outline-danger">
+                                              <button class="border-0 btn-transition btn btn-outline-danger" onclick="popUpConfirmationDelete( '<?php echo  $tache->getNom()?>' , '<?php echo $tache->getId()?>' )">
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                                           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                                     </svg>
+
                                               </button>
-                                            </a>
-                                        
-                                  
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +105,20 @@
     </div>
     </div>
 
-                
+    <script>
+        function popUpConfirmationDelete(nom,id) {
+            let text = "Are you sure you want to delete this task "+ nom +"\nEither OK or Cancel.";
+            if (confirm(text) == true) {
+                location.replace("index.php?action=tacheXDelet&idTask="+id+"&idList=<?=$listName?>");
+            }
+            document.getElementById("demo").innerHTML = text;
+        }
+
+        function updateBaseCheck(id) {
+            location.replace("index.php?action=tacheCheked&idTask="+id+"&idList=<?=$listName?>");
+
+        }
+    </script>
 
                             
 

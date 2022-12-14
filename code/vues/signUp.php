@@ -1,21 +1,21 @@
 <html>
 <head><title>SignUp</title></head>
 <header>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-       
-        <link rel="stylesheet" href="css/sign.css">
-        <link rel="stylesheet" href="css/navBar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/sign.css">
+    <link rel="stylesheet" href="css/navBar.css">
 </header>
 <body>
-    <?php 
-        require ($rep.$vues['navBar']);
-    ?>
-    <section class="gradient-custom">
-        <div class="container">
-            <form>
+<?php
+require ($rep.$vues['navBar']);
+?>
+<section class="gradient-custom">
+    <div class="container">
+        <form action="?action=signUp" method="post">
             <div class=" d-flex justify-content-center ">
                 <div class="col-xl-6">
                     <div class="card bg-dark text-white" style="border-radius: 1rem;">
@@ -26,7 +26,7 @@
                                 <h2 class="fw-bold mb-2 text-uppercase">SignUp</h2>
                                 <p class="text-white-50 mb-5">Please enter your username and password!</p>
 
-                    
+
                                 <div class="input-group mb-3">
                                     <p>
                                         <?php if (isset($errUserName)) { echo $errUserName; } ?>
@@ -57,57 +57,28 @@
                     </div>
                 </div>
             </div>
-                <?php if (isset($userName) && isset($password) && isset($description)){
-                    //echo "<strong>Les informations saisies sont :</strong> <br><strong>User name :</strong> $userName <br> <strong>Visibiliter :</strong> $visibilite <br> <strong>Description :</strong> $description <br> <strong>La liste a été crée est ajouter au home <strong>";
-                } ?>
-            </form>
-        </div>
-    </section>
+            <?php if (isset($userName) && isset($password)){
+                //echo "<strong>Les informations saisies sont :</strong> <br><strong>User name :</strong> $userName <br> <strong>Visibiliter :</strong> $visibilite <br> <strong>Description :</strong> $description <br> <strong>La liste a été crée est ajouter au home <strong>";
+            } ?>
+        </form>
+    </div>
+</section>
+<?php
+if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
 
-<!--    --><?php
-//
-//include "Utilisateur.php";
-//// include "TableauPersonne.php";
-//if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
-//	if (empty($_POST['email']) || !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)) {
-//		$errEmail='Il faut renseigné l\'';
-//	} else {
-//		$email=$_POST['email'];
-//	}
-//
-//	if (empty($_POST['password']) && strlen($_POST['isSubmit'])>=6) {
-//		$errPassword='Il faut renseigné le ';
-//	} else {
-//		$password=$_POST['password'];
-//	}
-//
-//    if(!empty($email) && !empty($password)){
-//        // chercher l'existance de l'utilisateur
-//        $p1 = new Utilisateur($nom, $prenom, $dateNaissance, $email);
-//        $tab[]=$p1;
-//    }
-//    if(!empty($tab)){
-//        $tab_serialiser = urlencode(addslashes(serialize($tab)));
-//        echo "<a href='vueDesPersonnes.php?PersonnesList=$tab_serialiser' title='Envoyer'>Envoyer des données via une url</a>";
-//    }
-//}
-//?>
-    <?php
-    if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
-
-        if (empty($_POST['userName'])) {
-            $errUserName='Il faut renseigné le ';
-        } else {
-            $userName=$_POST['userName'];
-        }
-
-        if (empty($_POST['password'])) {
-            $errPassword='Il faut renseigné le ';
-        } else {
-            $password=$_POST['password'];
-        }
+    if (empty($_POST['userName'])) {
+        $errUserName='Il faut renseigné le ';
+    } else {
+        $userName=$_POST['userName'];
     }
-    ?>
+
+    if (empty($_POST['password'])) {
+        $errPassword='Il faut renseigné le ';
+    } else {
+        $password=$_POST['password'];
+    }
+}
+?>
 
 </body>
 </html>

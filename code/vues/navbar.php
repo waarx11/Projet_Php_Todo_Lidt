@@ -7,7 +7,7 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
                     <div class="navbar-nav ml-auto" style="float: right;">
                         <a class="nav-item nav-link" href="#" style=" cursor: default;"></a>
-                        <a class="nav-item ">
+                        <a class="nav-item " href="index.php?action=signUpPage">
                             <button class="btn btn-outline-success" type="button">Signup</button>
                         </a>
                         <a class="nav-item nav-link" href="#" style=" cursor: default;"></a>

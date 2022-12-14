@@ -7,7 +7,7 @@ class ModelVisiteur
     //return toute les liste public
     public static function getPublicList(){
         $gw = new GatewayListe();
-        return $gw->displayAllPublic();
+        return $gw->displayAll($_SESSION['user'] ?? null);
     }
     public static function getTaches($idList){
         $gwTache = new GatewayTache();
@@ -16,7 +16,7 @@ class ModelVisiteur
 
     public static function getTachesPublic($idList){
         $gwTache = new GatewayTache();
-        return $gwTache->findByIdListOrderedPublic($idList);
+        return $gwTache->findByIdListOrdered($idList,$_SESSION['user'] ?? null);
     }
 
 
@@ -48,19 +48,23 @@ class ModelVisiteur
         $gwListe->inserListe(new Liste($id,$nom, $visibilite, $description, $userid));
     }
 
-    public static function removeList($idList){
-        $gwListe = new GatewayListe();
-        $gwTache = new GatewayTache();
-        $gwTache->deleteTacheByList($idList);
-        $gwListe->supprList($idList);
-    }
     public static function removeTask($idTask){
         $gwTache = new GatewayTache();
-        $gwTache->supprTachePublic($idTask);
+        $gwTache->supprTachePublic($idTask,$_SESSION['user'] ?? null);
     }
 
+    public static function updateCheckTaskPublic(string $idTaskVerif)
+    {
+        $gwTache = new GatewayTache();
+        $gwTache->updateCheckTache($idTaskVerif,$_SESSION['user'] ?? null);
 
+    }
 
+    public static function getCheckedPrc($id)
+    {
+        $gwListe =new GatewayListe();
+        return $gwListe->PrcCheckedList($id);
+    }
 
 
 }

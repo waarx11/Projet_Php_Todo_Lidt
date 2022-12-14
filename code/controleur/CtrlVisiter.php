@@ -2,6 +2,7 @@
 class CtrlVisiter {
 
 function __construct() {
+	//$_SESSION['user']='rami';
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 // on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
 
@@ -21,20 +22,32 @@ function __construct() {
 		case "connectionPage" :
 			$this->connectionPage();
 			break;
+		case "signUpPage" :
+			$this->signUpPage();
+			break;
 		case "tacheX" :
-			$idList=$_REQUEST['idList'] ?? null;
-			$idListeVerif = Validation::validateInt($idList);
-			$this->tacheX($idListeVerif);
+			$this->tacheX();
 			break;
 		case "tacheXDelet" :
-			$idTask=$_REQUEST['idTask'] ?? null;
-			$idTaskVerif = Validation::validateInt($idTask);
-			$this->tacheXDelet($idTaskVerif);
+			$this->tacheXDelet();
 			break;
 
 		case "ajoutList":
 			require ($rep.$vues['homeList']);
 			$this->listexInsert($nom,$visibilite,$description);
+			break;
+
+		case "tacheCheked":
+			$this->tacheCheked();
+			break;
+		case "loginUser":
+				$this->loginUser();
+				break;
+
+		case "creationCompte":
+			require ($rep.$vues['signUp']);
+			$this->creationCompte($userName,$password);
+			break;
 
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
@@ -69,30 +82,48 @@ function Reinit() {
 }
 function connectionPage() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
-	//appelle modelle il valid ce que le gate way donne
-	$dVue = array (
-		'nom' => "",
-		'age' => 0,
-		);
-		require ($rep.$vues['signUtilisateur']);
+	require ($rep.$vues['signUtilisateur']);
+}
+
+function signUpPage() {
+	global $rep,$vues; // nécessaire pour utiliser variables globales
+	require ($rep.$vues['signup']);
 }
 
 
-function tacheX($idList) {
-	global $rep,$vues; // nécessaire pour utiliser variables globales
-	//appelle modelle il valid ce que le gate way donne
-	$dVue =  ModelVisiteur::getTachesPublic($idList);
+function tacheX() {
+	global $rep,$vues;
+	$idList=$_REQUEST['idList'] ?? null;
+	$idListeVerif = Validation::validateInt($idList);
+
+	$dVue =  ModelVisiteur::getTachesPublic($idListeVerif);
 	$listName =  $idList;
 	require ($rep.$vues['tacheX']);
 }
 
-	private function tacheXDelet($idTask)
+function checkedPrc($id){
+
+	return ModelVisiteur::getCheckedPrc($id);
+}
+
+private function tacheXDelet()
+{
+
+	$idTask=$_REQUEST['idTask'] ?? null;
+	$idTaskVerif = Validation::validateInt($idTask);
+	ModelVisiteur::removeTask($idTaskVerif);
+	$this->tacheX();
+
+	//header.location; pour changer le location
+}
+	private function tacheCheked()
 	{
-		global $rep,$vues; // nécessaire pour utiliser variables globales
-		//appelle modelle il valid ce que le gate way donne
-		//$_server pour avoir le lien
-		ModelVisiteur::removeTask($idTask);
-		//header.location; pour changer le location
+		$idTask=$_REQUEST['idTask'] ?? null;
+		$idTaskVerif = Validation::validateInt($idTask);
+		ModelVisiteur::updateCheckTaskPublic($idTaskVerif);
+		$idList=$_REQUEST['idList'] ?? null;
+		header("LOCATION: index.php?action=tacheX&idList=".$idList);
+		//$this->tacheX();
 	}
 
 	private function listexInsert($nom,$visibilite,$description)
@@ -102,24 +133,41 @@ function tacheX($idList) {
 	}
 
 
-function ValidationFormulaire(array $dVueEreur) {
-	global $rep,$vues;
+	private function loginUser()
+	{
+			$error=false;
+			if (empty($_POST['userName'])) {
+				$dVueEreur['userNameEmpty'] = 'Il faut renseigné le ';
+				$error=true;
 
-	//si exception, ca remonte !!!
-	$nom=$_POST['txtNom']; // txtNom = nom du champ texte dans le formulaire
-	$age=$_POST['txtAge'];
-	Validation::val_form($nom,$age,$dVueEreur);
+			} else {
+				$userName = $_POST['userName'];
+			}
 
-	$model = new Simplemodel();
-	$data=$model->get_data();
+			if (empty($_POST['password'])) {
+				$dVueEreur['paswordEmpty'] = 'Il faut renseigné le ';
+				$error=true;
+			} else {
+				$password = $_POST['password'];
+			}
+			if($error){
+				$this->connectionPage();
+			}else{
+				if (ModelUtilisateur::login($userName, $password) == null) {
+					$dVueEreur['loginResponse'] = "password or/and id are incorrect";
+				}else{
+					header("LOCATION: index.php?action=connected");
+				}
+			}
 
-	$dVue = array (
-		'nom' => $nom,
-		'age' => $age,
-			'data' => $data,
-	);
-		require ($rep.$vues['vuephp1']);
-}
+
+	}
+
+//	private function creationCompte($userName,$password){
+//		global $rep,$vues;
+//		ModelVisiteur::
+//	}
+
 
 }//fin class
 ?>

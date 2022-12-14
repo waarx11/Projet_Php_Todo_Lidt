@@ -42,20 +42,13 @@ class GatewayListe
         return $resArray;
     }
 
-    public function displayAll(): array
+    public function displayAll($idUser): array
     {
-        $query = "SELECT * FROM LISTE";
-        if ($this->conx->executeQuery($query)) {
-            return $this->resultsToArrayList($this->conx->getResults());
-        } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe displayAll : la query n'est pas executable");
-        }
-    }
+        $query = "SELECT * FROM LISTE where visibilite OR userid=:user";
+        $this->conx->executeQuery($query,array(
+            ':user' => array($idUser  , $idUser  == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)
+        ));
 
-    public function displayAllPublic(): array
-    {
-        $query = "SELECT * FROM LISTE where visibilite=true";
-        $this->conx->executeQuery($query);
         $res=$this->resultsToArrayList($this->conx->getResults());
         if ($res!=null) {
             return $res;
@@ -63,6 +56,22 @@ class GatewayListe
             throw new Exception("No task for you ");
         }
     }
+
+    public function deleteList(string $userid,string $liste)
+    {
+        $gwTache=new GatewayTache();
+        $gwTache->deleteTacheByList($liste);
+        $query = "DELETE FROM LISTE WHERE userid=:userid AND liste=:liste;";
+        if ($this->conx->executeQuery($query, array(
+            ':userid' => array($userid, PDO::PARAM_STR_CHAR),
+            ':liste' => array($liste, PDO::PARAM_STR_CHAR)
+        ))){
+            return true;
+        } else {
+            throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");
+        }
+    }
+
 
     public function findById($id): array
     {
@@ -98,6 +107,17 @@ class GatewayListe
         $query = "SELECT * FROM LISTE WHERE usrid=:usrid";
         if ($this->conx->executeQuery($query, array(':name' => array($usrid, PDO::PARAM_STR_CHAR)))) {
             return $this->resultsToArrayList($this->conx->getResults());
+        } else {
+            throw new \mysql_xdevapi\Exception("Class GatewayListe findByUser : la query n'est pas executable");
+        }
+    }
+
+    public function PrcCheckedList($id)
+    {
+        $query = "SELECT (Count(*)*100)/(SELECT Count(*) FROM LISTE l,TACHE t WHERE l.id=t.liste AND l.id=:id)  FROM LISTE l,TACHE t WHERE l.id=t.liste AND l.id=:id AND t.checked; ";
+        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))) {
+            $res=$this->conx->getResults()[0][0];
+            return $res;
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe findByUser : la query n'est pas executable");
         }

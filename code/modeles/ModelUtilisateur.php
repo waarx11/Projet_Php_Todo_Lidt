@@ -19,6 +19,21 @@ class ModelUtilisateur
         $gtw=new GatewayUtilisateur();
         $login=Validation::validateUser($login);
         $mdp=Validation::validatePassword($mdp);
+//         if( password_verify($mdp,$gtw->getMdpHash($login) )){
+        if( $mdp==$gtw->getMdpHash($login) ){
+            $_SESSION['role']= "Utilisateur" ;
+            $_SESSION['user']=$login;
+            return true;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public static function creationCompte($login,$mdp){
+        $gtw=new GatewayUtilisateur();
+        $login=Validation::validateUser($login);
+        $mdp=Validation::validatePassword($mdp);
 
         if( password_verify($mdp,$gtw->getMdpHash($login) )){
             $_SESSION['role']= "Utilisateur" ;
@@ -37,12 +52,14 @@ class ModelUtilisateur
     }
 
     public function isConnected(){
-        if(isset( $_SESSION['login']) && isset($_SESSION['role'])) {
-            $login=Validation::validateUser($_SESSION['login']);
-            $role=Validation::validateString($_SESSION['login']);
-            return new Utilisateur($login,$role);
+        if(isset( $_SESSION['user']) && isset($_SESSION['role']) ) {
+
+            if($_SESSION['role']=='Utilisateur'){
+
+                return 'Utilisateur';
+            }
         }
-        else return null;
+        return null;
     }
 
 }
