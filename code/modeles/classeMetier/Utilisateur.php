@@ -1,7 +1,5 @@
 <?php
 
-namespace classeMetier;
-
 
 class Utilisateur
 {
@@ -27,9 +25,11 @@ class Utilisateur
         return $this->role;
     }
 
-    public function __construct(string $id,string $role)
+    public function __construct(string $id, string $nom, string $mail, string $role)
     {
         $this->id=$id;
+        $this->nom=$nom;
+        $this->mail=$mail;
         $this->role=$role;
     }
 

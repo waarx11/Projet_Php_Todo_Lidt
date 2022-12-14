@@ -12,6 +12,7 @@
     </head>
 
     <body>
+    
         <?php 
             require ($rep.$vues['navBar']);
 
@@ -88,7 +89,22 @@
 
                                     </style>
 
-                                    <h2><?= $list->getNom() ?></h2>
+                                    <h2><?= $list->getNom() ?>
+                                    <?php
+                                        if(isset($_SESSION['user']) && (!$list->getVisibilite())){?>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lock" viewBox="0 0 16 16">
+                                                <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 5.996V14H3s-1 0-1-1 1-4 6-4c.564 0 1.077.038 1.544.107a4.524 4.524 0 0 0-.803.918A10.46 10.46 0 0 0 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h5ZM9 13a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2Zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1Z"/>
+                                            </svg>
+                                       <?php
+                                       }else{?>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                            </svg>
+<?php
+                                       }?>
+
+                                    </h2>
                                     <p><?= $list->getDescription() ?></p>
 
                                     <a href="index.php?action=tacheX&idList=<?=$list->getId()?>" class="view">
@@ -98,7 +114,7 @@
                                         </svg > view
                                     </a>
 
-                                    <a href="#" class="delete">
+                                    <a href="#" onclick="popUpConfirmationDelete( '<?php echo  $list->getNom()?>', '<?php echo  $list->getId()?>')" class="delete">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
   <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
 </svg>
@@ -191,6 +207,15 @@
         }
     }
 ?>
+<script>
+        function popUpConfirmationDelete(nom,id) {
+            let text = "Are you sure you want to delete this list "+ nom +"\nEither OK or Cancel.";
+            if (confirm(text) == true) {
+                location.replace("index.php?action=listDelete&idList="+id);
+            }
+            document.getElementById("demo").innerHTML = text;
+        }
+</script>
 
     </body>
 </html>

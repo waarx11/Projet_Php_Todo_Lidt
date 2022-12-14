@@ -64,11 +64,12 @@ class GatewayTache
             throw new Exception("Error delete an task not exist or not belong to you !!");
         }
     }
-    public function deleteTacheByList(string $liste)
+    public function deleteTacheByList(string $liste,string $user)
     {
-        $query = "DELETE FROM TACHE WHERE liste=:liste;";
+        $query = "DELETE FROM TACHE WHERE liste IN (SELECT id FROM LISTE where userid=:user and id=:liste) ";
         if ($this->conx->executeQuery($query, array(
-            ':liste' => array($liste, PDO::PARAM_STR_CHAR)
+            ':liste' => array($liste, PDO::PARAM_STR_CHAR),
+            ':user' => array($user, PDO::PARAM_STR_CHAR)
             ))){
             return true;
         } else {

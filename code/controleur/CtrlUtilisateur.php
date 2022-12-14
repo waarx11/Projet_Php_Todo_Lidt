@@ -20,18 +20,12 @@ class CtrlUtilisateur
                 case 'connected':
                     $this->Reinit();
                     break;
-                case "connectionPage" :
-                    $this->connectionPage();
+
+                case "logout":
+                    $this->logout();
                     break;
-                case "tacheX" :
-                    $idList=$_REQUEST['idList'] ?? null;
-                    $idListeVerif = Validation::validateInt($idList);
-                    $this->tacheX($idListeVerif);
-                    break;
-                case "tacheXDelet" :
-                    $idTask=$_REQUEST['idTask'] ?? null;
-                    $idTaskVerif = Validation::validateInt($idTask);
-                    $this->tacheXDelet($idTaskVerif);
+                case "listDelete":
+                    $this->listDelete();
                     break;
 
                 default:
@@ -58,14 +52,27 @@ class CtrlUtilisateur
         exit(0);
     }//fin constructeur
 
-    function Reinit() {
+    public function Reinit() {
         global $rep,$vues; // nécessaire pour utiliser variables globales
         $dVue = ModelVisiteur::getPublicList();
         require ($rep.$vues['homeList']);
     }
-    function checkedPrc($id){
+    public function checkedPrc($id){
 
         return ModelVisiteur::getCheckedPrc($id);
+    }
+    public function listDelete(){
+        $idList=$_REQUEST['idList'] ?? null;
+        ModelUtilisateur::deleteList($idList);
+        $this->Reinit();
+    }
+    
+
+    public function logout()
+    {
+        ModelUtilisateur::logout();
+        $_REQUEST['action']=null;
+        new CtrlVisiter();
     }
 
 }

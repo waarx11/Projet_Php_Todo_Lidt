@@ -19,15 +19,19 @@ function __construct() {
 		case NULL:
 			$this->Reinit();
 			break;
+
 		case "connectionPage" :
 			$this->connectionPage();
 			break;
+
 		case "signUpPage" :
 			$this->signUpPage();
 			break;
+
 		case "tacheX" :
 			$this->tacheX();
 			break;
+
 		case "tacheXDelet" :
 			$this->tacheXDelet();
 			break;
@@ -40,13 +44,13 @@ function __construct() {
 		case "tacheCheked":
 			$this->tacheCheked();
 			break;
-		case "loginUser":
-				$this->loginUser();
-				break;
 
-		case "creationCompte":
-			require ($rep.$vues['signUp']);
-			$this->creationCompte($userName,$password);
+		case "loginUser":
+			$this->loginUser();
+			break;
+
+		case "signUpUser":
+			$this->signUpUser();
 			break;
 
 		default:
@@ -89,7 +93,6 @@ function signUpPage() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 	require ($rep.$vues['signup']);
 }
-
 
 function tacheX() {
 	global $rep,$vues;
@@ -135,32 +138,82 @@ private function tacheXDelet()
 
 	private function loginUser()
 	{
-			$error=false;
-			if (empty($_POST['userName'])) {
-				$dVueEreur['userNameEmpty'] = 'Il faut renseigné le ';
-				$error=true;
+		$error=false;
+		if (empty($_POST['userName'])) {
+			$dVueEreur['userNameEmpty'] = 'Il faut renseigné le ';
+			$error=true;
 
-			} else {
-				$userName = $_POST['userName'];
-			}
+		} else {
+			$userName = $_POST['userName'];
+		}
 
-			if (empty($_POST['password'])) {
-				$dVueEreur['paswordEmpty'] = 'Il faut renseigné le ';
-				$error=true;
-			} else {
-				$password = $_POST['password'];
-			}
-			if($error){
-				$this->connectionPage();
+		if (empty($_POST['password'])) {
+			$dVueEreur['paswordEmpty'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$password = $_POST['password'];
+		}
+		if($error){
+			$this->connectionPage();
+		}else{
+			if (ModelUtilisateur::login($userName, $password) == null) {
+				$dVueEreur['loginResponse'] = "password or/and id are incorrect";
 			}else{
-				if (ModelUtilisateur::login($userName, $password) == null) {
-					$dVueEreur['loginResponse'] = "password or/and id are incorrect";
-				}else{
-					header("LOCATION: index.php?action=connected");
-				}
+				header("LOCATION: index.php?action=connected");
 			}
+		}
+	}
 
+	private function signUpUser(){
+		$error=false;
+		if (empty($_POST['userMail']) || !filter_var($_POST['userMail'],FILTER_VALIDATE_EMAIL)) {
+			$dVueEreur['userMailInvalide'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$userMail = $_POST['userMail'];
+		}
 
+		if (empty($_POST['userIdSignUp'])) {
+			$dVueEreur['userIdSignUpEmpty'] = 'Il faut renseigné le ';
+			$error=true;
+
+		} else {
+			$userIdSignUp = $_POST['userIdSignUp'];
+		}
+
+		if (empty($_POST['userNameSignUp'])) {
+			$dVueEreur['userNameSignUpEmpty'] = 'Il faut renseigné le ';
+			$error=true;
+
+		} else {
+			$userNameSignUp = $_POST['userNameSignUp'];
+		}
+
+		if (empty($_POST['paswordSignUp'])) {
+			$dVueEreur['paswordSignUpEmpty'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$paswordSignUp = $_POST['paswordSignUp'];
+		}
+
+		if (empty($_POST['paswordSignUpEquals']) && $_POST['paswordSignUpEquals'] != $_POST['paswordSignUp']) {
+			$dVueEreur['paswordSignUpNotEquals'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$paswordSignUpEquals = $_POST['paswordSignUpEquals'];
+		}
+		if($error){
+			$this->signUpPage();
+		}else{
+			if (ModelUtilisateur::creationCompte($userIdSignUp, $userNameSignUp, $userMail, $paswordSignUpEquals) ) {
+				header("LOCATION: index.php?action=connected");
+				
+			}
+			else{
+				echo 'hy';
+				$dVueEreur['signUpResponse'] = "Impossible de crée le compte utilisateur";
+			}
+		}
 	}
 
 //	private function creationCompte($userName,$password){

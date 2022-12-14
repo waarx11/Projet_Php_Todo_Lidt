@@ -7,20 +7,12 @@ class ModelUtilisateur
     {
 
     }
-
-    //récupère les taches de la liste $_GET["idListe"]
-    public static function getTaskOf(){
-        $gwTache = new GatewayTache();
-        $liste = ModelUtilisateur::getList();
-        return $gwTache->findById($_GET["idListe"]);
-    }
     
 	 public static function login($login,$mdp){
         $gtw=new GatewayUtilisateur();
         $login=Validation::validateUser($login);
         $mdp=Validation::validatePassword($mdp);
-//         if( password_verify($mdp,$gtw->getMdpHash($login) )){
-        if( $mdp==$gtw->getMdpHash($login) ){
+        if( password_verify($mdp,$gtw->getMdpHash($login ))){
             $_SESSION['role']= "Utilisateur" ;
             $_SESSION['user']=$login;
             return true;
@@ -30,22 +22,23 @@ class ModelUtilisateur
         }
     }
 
-    public static function creationCompte($login,$mdp){
+    public static function creationCompte($userIdSignUp,$userNameSignUp, $userMail, $password){
         $gtw=new GatewayUtilisateur();
-        $login=Validation::validateUser($login);
-        $mdp=Validation::validatePassword($mdp);
-
-        if( password_verify($mdp,$gtw->getMdpHash($login) )){
-            $_SESSION['role']= "Utilisateur" ;
-            $_SESSION['login']=$login;
-            return new Utilisateur($login,"Utilisateur");
+        $id=Validation::validateUser($userIdSignUp);
+        $userNameSignUp=Validation::validateUser($userNameSignUp);
+        $userMail=Validation::validateMail($userMail);
+        $password=Validation::validatePassword($password);
+        $role="Utilisateur";
+        $mdp=password_hash($password, PASSWORD_DEFAULT);
+        if($gtw->inserUser(new Utilisateur($id,$userNameSignUp,$userMail,$role),$mdp)){
+            return ModelUtilisateur::login($userNameSignUp,$mdp);
         }
         else{
             return null;
         }
     }
 
-    public function logout(){
+    public static function logout(){
         session_unset();
         session_destroy();
         $_SESSION = array();
@@ -61,5 +54,17 @@ class ModelUtilisateur
         }
         return null;
     }
+
+    public static function deleteList($idList){
+        if($idList!=NULL){
+            $gtwList=new GatewayListe();
+            $gtwTache=new GatewayTache();
+            $gtwTache->deleteTacheByList($idList,$_SESSION['user']);
+            $gtwList->supprList($idList,$_SESSION['user']);
+        }
+        
+    }
+
+    
 
 }

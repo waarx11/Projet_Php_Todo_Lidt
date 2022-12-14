@@ -15,13 +15,15 @@ class GatewayUtilisateur
 
     public function inserUser(Utilisateur $user,$mdp)
     {
-        $query = "INSERT INTO UTILISATEUR(mail,nom, roleU, mdp) VALUES (:nom,:mail,:roleU, :mdp)";
+        $query = "INSERT INTO UTILISATEUR(id,mail,nom, roleU, mdp) VALUES (:id,:nom,:mail,:roleU,:mdp)";
         //Pas besoin de préciser l'id car il est automatiquement incrémenter.
         if ($this->conx->executeQuery($query, array(
+            ':id' => array($user->getId(), PDO::PARAM_STR_CHAR),
             ':nom' => array($user->getNom(), PDO::PARAM_STR_CHAR),
             ':mail' => array($user->getMail(), PDO::PARAM_STR_CHAR),
             ':roleU' => array($user->getRole(), PDO::PARAM_STR_CHAR),
             ':mdp' => array($mdp, PDO::PARAM_STR_CHAR)))) {
+                return TRUE;
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe inserListe : la query n'est pas executable");
         }

@@ -24,10 +24,14 @@ class GatewayListe
         }
     }
 
-    public function supprList(string $id)
+    public function supprList(string $id,string $user)
     {
-        $query = "DELETE FROM LISTE WHERE id=:id;  ";
-        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))){
+        $query = "DELETE FROM LISTE WHERE id=:id AND userid=:user;  ";
+        if ($this->conx->executeQuery($query, array(
+            ':id' => array($id, PDO::PARAM_INT),
+            ':user' => array($user, PDO::PARAM_STR_CHAR),
+            
+            ))){
             return true;
         } else {
             throw new \mysql_xdevapi\Exception("Class GatewayListe supprList : la query n'est pas executable");

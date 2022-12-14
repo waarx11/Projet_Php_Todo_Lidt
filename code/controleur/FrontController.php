@@ -13,7 +13,7 @@ class FrontController
         try {
             $string_actor = '';
             $listeActions = array(
-                'Utilisateur' => array('action1', 'action2','connected'),
+                'Utilisateur' => array('connected','logout','listDelete'),
                 'Admin' => array('action3', 'action4'),
             );
             $action = $_REQUEST['action'] ?? null;
@@ -24,7 +24,8 @@ class FrontController
                 $mdl = new $mdlClass;
                 $actor = $mdl->isConnected();
                 if ($actor == NULL) {
-                    require('sign' . $string_actor);
+                    $_REQUEST['action']='connectionPage';
+                    new CtrlVisiter();
                 } else {
                     $trlClass=('Ctrl' . $string_actor);
                     $ctrl = new $trlClass ;

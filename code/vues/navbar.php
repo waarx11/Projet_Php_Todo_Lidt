@@ -13,7 +13,7 @@
                         <a class="nav-item nav-link" href="#" style=" cursor: default;"></a>
 
                         <?php
-                        if (! isset($_SESSION['LOGIN']))
+                        if (! isset($_SESSION['user']))
                             {?>
                             <!-- form methode="post" name="form" id="form" action=""-->
                             <a class=" nav-item" href="index.php?action=connectionPage" >
@@ -25,7 +25,7 @@
                                 <?php
                             }
                         else { ?>
-                            <a class=" nav-item" href="index.php?action=connectionPage" >
+                            <a class=" nav-item" href="index.php?action=logout" >
                                 <button class="btn btn-outline" type="button">Logout</button>
                             </a>
                             <?php } 
