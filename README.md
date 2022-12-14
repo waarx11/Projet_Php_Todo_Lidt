@@ -8,9 +8,11 @@ geometrie: 1cm
 
 ## Visialisation
 **Tout** les utilisateurs peuvent voir les listes public et sont contenue
-**Mais** Seulement les utilisateur actuellement peuvent visualiser les liste privé
+**Mais** seulement les utilisateur actuellement peuvent visualiser les liste privé
+**Toutes** les tâches sont triés 
 
-## Ajout et suppression liste
+## Ajout et suppression d'une liste
 **Seulement les utilisateurs connecter** peuvent ajouter des listes et supprimmé les listes qu'il à crée
 
-## Ajouter Tâche
+## Ajout et suppression d'une tâche
+**Tout** les utilisateurs peuvent ajouter dans les listes public
