@@ -53,7 +53,7 @@ class GatewayTache
     }
     public function supprTachePublic(string $id,$idUser)
     {
-        $query = "DELETE FROM TACHE WHERE id=:id AND (userid=:user OR userid IS NULL ) ;";
+        $query = "DELETE FROM TACHE WHERE id=:id AND ((userid=:user OR userid IS NULL ) OR liste IN (SELECT id FROM LISTE WHERE userid=:user));";
         if ($this->conx->executeQuery($query, array(
             ':id' => array($id, PDO::PARAM_INT),
             ':user' => array($idUser , $idUser == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)

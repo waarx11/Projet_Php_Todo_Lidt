@@ -79,22 +79,27 @@ function __construct() {
 
 function Reinit() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
+	$_COOKIE['path']="/home";
 	$dVue = ModelVisiteur::getPublicList();
 
 	require ($rep.$vues['homeList']);
 }
 function connectionPage() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
+	$_COOKIE['path']="/home/login";
 	require ($rep.$vues['signUtilisateur']);
 }
 
 function signUpPage() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
+	$_COOKIE['path']="/home/signup";
+
 	require ($rep.$vues['signup']);
 }
 
 function tacheX() {
 	global $rep,$vues;
+	$_COOKIE['path']="/home/list/task";
 	$idList=$_REQUEST['idList'] ?? null;
 	$idListeVerif = Validation::validateInt($idList);
 
@@ -110,7 +115,6 @@ function checkedPrc($id){
 
 private function tacheXDelet()
 {
-
 	$idTask=$_REQUEST['idTask'] ?? null;
 	$idTaskVerif = Validation::validateInt($idTask);
 	ModelVisiteur::removeTask($idTaskVerif);

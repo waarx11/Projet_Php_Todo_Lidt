@@ -59,6 +59,8 @@ class CtrlUtilisateur
 
     public function Reinit() {
         global $rep,$vues; // nécessaire pour utiliser variables globales
+        $_COOKIE['path']="/home/connected";
+
         $dVue = ModelVisiteur::getPublicList();
         require ($rep.$vues['homeList']);
     }

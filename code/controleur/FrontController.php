@@ -9,6 +9,9 @@ class FrontController
         global $rep,$vues;
         session_start();
 
+        if (!isset($_COOKIE['path'])) {
+            setcookie("path", "" );
+        }
 
         try {
             $string_actor = '';
