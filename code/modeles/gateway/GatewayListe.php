@@ -10,20 +10,6 @@ class GatewayListe
         $this->conx = new Connection($base, $login,$mdp);
     }
 
-    public function inserListe(Liste $liste)
-    {
-        $query = "INSERT INTO LISTE(nom,visibilite,description,userid) VALUES(:nom, :visibilite, :description, :userid)";
-        //Pas besoin de préciser l'id car il est automatiquement incrémenter.
-        if ($this->conx->executeQuery($query, array(
-            ':nom' => array($liste->getNom(), PDO::PARAM_STR_CHAR),
-            ':visibilite' => array($liste->getVisibilite(), PDO::PARAM_INT),
-            ':description' => array($liste->getDescription(), PDO::PARAM_STR_CHAR),
-            ':userid' => array($liste->getUserid(), PDO::PARAM_STR_CHAR)))) {
-        } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe inserListe : la query n'est pas executable");
-        }
-    }
-
     public function supprList(string $id,string $user)
     {
         $query = "DELETE FROM LISTE WHERE id=:id AND userid=:user;  ";
@@ -34,7 +20,7 @@ class GatewayListe
             ))){
             return true;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe supprList : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe supprList : la query n'est pas executable");
         }
     }
 
@@ -57,7 +43,7 @@ class GatewayListe
         if ($res!=null) {
             return $res;
         } else {
-            throw new Exception("No task for you ");
+            throw new PDOException("No task for you ");
         }
     }
 
@@ -72,7 +58,7 @@ class GatewayListe
         ))){
             return true;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");
+            throw new PDOException("Class GatewayTache supprTache : la query n'est pas executable");
         }
     }
 
@@ -83,7 +69,7 @@ class GatewayListe
         if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)))) {
             return $this->resultsToArrayList($this->conx->getResults());
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe findById : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe findById : la query n'est pas executable");
         }
     }
 
@@ -93,7 +79,7 @@ class GatewayListe
         if ($this->conx->executeQuery($query, array(':name' => array($name, PDO::PARAM_STR_CHAR)))) {
             return $this->resultsToArrayList($this->conx->getResults());
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe findByName : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe findByName : la query n'est pas executable");
         }
     }
     public function findByNamePublic($name)
@@ -102,7 +88,7 @@ class GatewayListe
         if ($this->conx->executeQuery($query, array(':name' => array($name, PDO::PARAM_STR_CHAR)))) {
             return $this->resultsToArrayList($this->conx->getResults());
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe findByNamePublic : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe findByNamePublic : la query n'est pas executable");
         }
     }
 
@@ -112,7 +98,7 @@ class GatewayListe
         if ($this->conx->executeQuery($query, array(':name' => array($usrid, PDO::PARAM_STR_CHAR)))) {
             return $this->resultsToArrayList($this->conx->getResults());
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe findByUser : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe findByUser : la query n'est pas executable");
         }
     }
 
@@ -123,7 +109,21 @@ class GatewayListe
             $res=$this->conx->getResults()[0][0];
             return $res;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe findByUser : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe findByUser : la query n'est pas executable");
+        }
+    }
+
+    public function addList(ListModal $listAdd)
+    {
+        $query = "INSERT INTO LISTE(nom,visibilite,description,userid) VALUES(:nom, :visibilite, :description, :userid)";
+        //Pas besoin de préciser l'id car il est automatiquement incrémenter.
+        if ($this->conx->executeQuery($query, array(
+            ':nom' => array($listAdd->getNom(), PDO::PARAM_STR_CHAR),
+            ':visibilite' => array($listAdd->getVisibilite(), PDO::PARAM_INT),
+            ':description' => array($listAdd->getDescription(), PDO::PARAM_STR_CHAR),
+            ':userid' => array($listAdd->getUserid(), PDO::PARAM_STR_CHAR)))) {
+        } else {
+            throw new PDOException("Class GatewayListe inserListe : la query n'est pas executable");
         }
     }
 

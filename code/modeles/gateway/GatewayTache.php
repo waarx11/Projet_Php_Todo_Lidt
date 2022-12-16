@@ -20,21 +20,21 @@ class GatewayTache
         }
         return $resArray;
     }
-    public function inserTache(Tache $tache)
+    public function addTache(TacheModal $tache)
     {
-        $query = "INSERT INTO TACHE(nom,priorite,dateCreation,dateFin,repete,checked,userid,list) VALUES(:nom, :priorite, :dateCreation, :dateFin, :repete,:checked, :userid, :list)";
+        $query = "INSERT INTO TACHE(nom,priorite,dateCreation,dateFin,repete,checked,userid,liste) VALUES(:nom, :priorite, :dateCreation, :dateFin, :repete,:checked, :userid, :list)";
         //Pas besoin de préciser l'id car il est automatiquement incrémenter.
         if ($this->conx->executeQuery($query, array(
             ':nom' => array($tache->getNom(), PDO::PARAM_STR_CHAR),
             ':priorite' => array($tache->getPriorite(), PDO::PARAM_INT),
-            ':dateCreation' => array($tache->getDateCreation(), date("Y-m-d H:i:s", strtotime($tache->getDateCreation)), PDO::PARAM_STR),
-            ':dateFin' => array($tache->getDateFin(), date("Y-m-d H:i:s", strtotime($tache->getDateFin)), PDO::PARAM_STR),
+            ':dateCreation' => array(date("Y-m-d"), PDO::PARAM_STR),
+            ':dateFin' => array($tache->getDateFin(), PDO::PARAM_STR),
             ':repete' => array($tache->getRepetition(), PDO::PARAM_BOOL),
-            ':checked' => array($tache->getChecked(), PDO::PARAM_BOOL),
+            ':checked' => array(false, PDO::PARAM_BOOL),
             ':userid' => array($tache->getUser(), PDO::PARAM_STR_CHAR),
-            ':list' => array($tache->getListe(), PDO::PARAM_STR_CHAR)))) {
+            ':list' => array($tache->getListe(), PDO::PARAM_INT)))) {
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache inserTache : la query n'est pas executable");
+            throw new PDOException("Class GatewayTache inserTache : la query n'est pas executable");
         }
     }
     public function updateCheckTache(string $id,$idUser)
@@ -48,7 +48,7 @@ class GatewayTache
         ))){
             return true;
         } else {
-            throw new Exception("Error delete an task not exist or not belong to you !!");
+            throw new PDOException("Error delete an task not exist or not belong to you !!");
         }
     }
     public function supprTachePublic(string $id,$idUser)
@@ -61,7 +61,7 @@ class GatewayTache
         ))){
             return true;
         } else {
-            throw new Exception("Error delete an task not exist or not belong to you !!");
+            throw new PDOException("Error delete an task not exist or not belong to you !!");
         }
     }
     public function deleteTacheByList(string $liste,string $user)
@@ -73,7 +73,7 @@ class GatewayTache
             ))){
             return true;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache supprTache : la query n'est pas executable");
+            throw new PDOException("Class GatewayTache supprTache : la query n'est pas executable");
         }
     }
 
@@ -87,7 +87,7 @@ class GatewayTache
             return $this->resultsToArrayTache($this->conx->getResults());
         }
          else {
-            throw new Exception("No task for you ");
+            throw new PDOException("No task for you ");
         }
     }
 
@@ -98,7 +98,7 @@ class GatewayTache
         if ($this->conx->executeQuery($query, array(':name' => array($name, PDO::PARAM_STR_CHAR)))) {
             return resultsToArrayTache($this->conx->getResults());
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayTache findByName : la query n'est pas executable");
+            throw new PDOException("Class GatewayTache findByName : la query n'est pas executable");
         }
     }
 }

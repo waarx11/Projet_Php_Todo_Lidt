@@ -13,7 +13,7 @@ class FrontController
         try {
             $string_actor = '';
             $listeActions = array(
-                'Utilisateur' => array('connected','logout','listDelete'),
+                'Utilisateur' => array('connected','logout','listDelete','addList'),
                 'Admin' => array('action3', 'action4'),
             );
             $action = $_REQUEST['action'] ?? null;

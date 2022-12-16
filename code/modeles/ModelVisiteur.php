@@ -20,15 +20,6 @@ class ModelVisiteur
     }
 
 
-    public static function addTache(){ //ajoute une tache dans la liste d'id $_GET["idListe"]
-        $gwTache = new GatewayTache();
-        $liste = ModelVisiteur::getList();
-        $titre = Validation::validateUser($_POST["titre"]);
-        $description = Validation::validateString($_POST["description"]);
-        $dateFin = Validation::validateDate($_POST["dateFin"]);
-        $idListe = $liste->getId();
-        $gwTache->insertTaskIn($titre, $description, $dateFin, $idListe, (isset($_POST["fait"]) && $_POST["fait"]) ? true : false);
-    }
 
     public static function removeTache(){
         $gwTache = new GatewayTache();
@@ -59,7 +50,11 @@ class ModelVisiteur
         $gwTache->updateCheckTache($idTaskVerif,$_SESSION['user'] ?? null);
 
     }
-
+    public static function ajoutTache(TacheModal $tacheAdd)
+    {
+        $gtwTache=new GatewayTache();
+        $gtwTache->addTache($tacheAdd);
+    }
     public static function getCheckedPrc($id)
     {
         $gwListe =new GatewayListe();

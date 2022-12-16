@@ -6,8 +6,6 @@ function __construct() {
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 // on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
 
-//debut
-
 //on initialise un tableau d'erreur
 	$dVueEreur = array ();
 	try{
@@ -32,13 +30,12 @@ function __construct() {
 			$this->tacheX();
 			break;
 
-		case "tacheXDelet" :
-			$this->tacheXDelet();
+		case "tacheXAdd" :
+			$this->tacheXAdd();
 			break;
 
-		case "ajoutList":
-			require ($rep.$vues['homeList']);
-			$this->listexInsert($nom,$visibilite,$description);
+		case "tacheXDelet" :
+			$this->tacheXDelet();
 			break;
 
 		case "tacheCheked":
@@ -52,6 +49,8 @@ function __construct() {
 		case "signUpUser":
 			$this->signUpUser();
 			break;
+
+
 
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
@@ -129,12 +128,6 @@ private function tacheXDelet()
 		//$this->tacheX();
 	}
 
-	private function listexInsert($nom,$visibilite,$description)
-	{
-		global $rep,$vues; // nécessaire pour utiliser variables globales
-		ModelVisiteur::createList();
-	}
-
 
 	private function loginUser()
 	{
@@ -205,21 +198,70 @@ private function tacheXDelet()
 		if($error){
 			$this->signUpPage();
 		}else{
-			if (ModelUtilisateur::creationCompte($userIdSignUp, $userNameSignUp, $userMail, $paswordSignUpEquals) ) {
-				header("LOCATION: index.php?action=connected");
+			ModelUtilisateur::creationCompte($userIdSignUp, $userNameSignUp, $userMail, $paswordSignUpEquals);
+			header("LOCATION: index.php?action=connected");
 				
-			}
-			else{
-				echo 'hy';
-				$dVueEreur['signUpResponse'] = "Impossible de crée le compte utilisateur";
-			}
+//			}
+//			else{
+//				echo 'hy';
+//				$dVueEreur['signUpResponse'] = "Impossible de crée le compte utilisateur";
+//			}
 		}
 	}
 
-//	private function creationCompte($userName,$password){
-//		global $rep,$vues;
-//		ModelVisiteur::
-//	}
+	private function tacheXAdd()
+	{
+		if (empty($_POST['tacheName']) ) {
+			$dVueEreur['tacheName'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$tacheName = $_POST['tacheName'];
+		}
+		if (empty($_POST['tacheYear']) ) {
+			$dVueEreur['tacheYear'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$tacheYear = $_POST['tacheYear'];
+		}
+		if (empty($_POST['tacheDay']) ) {
+			$dVueEreur['tacheDay'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$tacheDay = $_POST['tacheDay'];
+		}
+		if (empty($_POST['tacheMonth']) ) {
+			$dVueEreur['tacheMonth'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$tacheMonth = $_POST['tacheMonth'];
+		}
+		$tacheDateFin=$tacheYear."-".$tacheMonth."-".$tacheDay;
+		if (empty($_POST['tacheListe']) ) {
+			$dVueEreur['tacheListe'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$tacheListe = $_POST['tacheListe'];
+		}
+
+		if (empty($_POST['tachePriorite']) ) {
+			$dVueEreur['tachePriorite'] = 'Il faut renseigné le ';
+			$error=true;
+		} else {
+			$tachePriorite = $_POST['tachePriorite'];
+		}
+
+		if (empty($_POST['tacheRepete']) ) {
+			$dVueEreur['tacheRepete'] = 'Il faut renseigné le ';
+			$_POST['tacheRepete']=false;
+		} else {
+			$tacheRepete = $_POST['tacheRepete'];
+		}
+
+		ModelVisiteur::ajoutTache(new TacheModal($tacheName,$tacheDateFin,$tacheRepete ?? false,$tachePriorite,$_SESSION['user'] ?? null,$tacheListe));
+		header("LOCATION:".$_POST['pageAct']);
+
+
+	}
 
 
 }//fin class

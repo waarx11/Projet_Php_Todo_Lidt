@@ -44,6 +44,8 @@ class ModelUtilisateur
         $_SESSION = array();
     }
 
+
+
     public function isConnected(){
         if(isset( $_SESSION['user']) && isset($_SESSION['role']) ) {
 
@@ -53,6 +55,12 @@ class ModelUtilisateur
             }
         }
         return null;
+    }
+
+    public static function ajoutList(ListModal $listAdd)
+    {
+        $gtwList=new GatewayListe();
+        $gtwList->addList($listAdd);
     }
 
     public static function deleteList($idList){

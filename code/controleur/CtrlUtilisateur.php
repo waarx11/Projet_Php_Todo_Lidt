@@ -28,10 +28,15 @@ class CtrlUtilisateur
                     $this->listDelete();
                     break;
 
+                case "addList":
+                    $this->addList();
+                    break;
+
                 default:
                     $dVueEreur[] =	"Erreur d'appel php";
                     require ($rep.$vues['vuephp1']);
                     break;
+
             }
 
         } catch (PDOException $e)
@@ -64,9 +69,29 @@ class CtrlUtilisateur
     public function listDelete(){
         $idList=$_REQUEST['idList'] ?? null;
         ModelUtilisateur::deleteList($idList);
-        $this->Reinit();
+        $_REQUEST['action']='connected';
+        new CtrlUtilisateur();
     }
-    
+    private function addList()
+    {
+        if (empty($_POST['listName']) ) {
+            $dVueEreur['nom'] = 'Il faut renseigné le ';
+            $error=true;
+        } else {
+            $listName = $_POST['listName'];
+        }
+        if (empty($_POST['listDescription']) ) {
+            $dVueEreur['listDescription'] = 'Il faut renseigné le ';
+            $error=true;
+        } else {
+            $listDescription = $_POST['listDescription'];
+        }
+        $listVisibilite=$_POST['listVisibilite'];
+        ModelUtilisateur::ajoutList(new ListModal($listName,$listVisibilite,$listDescription,$_SESSION['user']));
+        $_REQUEST['action']='connected';
+        new CtrlUtilisateur();
+
+    }
 
     public function logout()
     {

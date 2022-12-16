@@ -25,7 +25,7 @@ class GatewayUtilisateur
             ':mdp' => array($mdp, PDO::PARAM_STR_CHAR)))) {
                 return TRUE;
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayListe inserListe : la query n'est pas executable");
+            throw new PDOException("Class GatewayListe inserListe : la query n'est pas executable");
         }
     }
 
@@ -35,7 +35,7 @@ class GatewayUtilisateur
         if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))) {
                 return $this->conx->getResults()[0]['mdp'];
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
+            throw new PDOException("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
         }
     }
     public function isConnected($id):string
@@ -44,7 +44,7 @@ class GatewayUtilisateur
         if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))) {
             return $this->conx->getResults()[0]['mdp'];
         } else {
-            throw new \mysql_xdevapi\Exception("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
+            throw new PDOException("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
         }
     }
 

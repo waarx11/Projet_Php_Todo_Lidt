@@ -80,8 +80,8 @@
                                             width:   <?php echo $this->checkedPrc($list->getId())?>%;
 
                                         }
-                                        .details<?php echo $list->getId()?>:hover h2,.details:hover p{
-                                            color: #76bcd6;
+                                        .details<?php echo $list->getId()?>:hover h2,.details<?php echo $list->getId()?>:hover p,.details<?php echo $list->getId()?>:hover h6{
+                                            color: #948d6f;
                                         }
                                         .details<?php echo $list->getId()?>:hover a{
                                             font-weight: bold;
@@ -105,6 +105,7 @@
                                        }?>
 
                                     </h2>
+                                    <h6>Crée par <?=$list->getUserid()?></h6>
                                     <p><?= $list->getDescription() ?></p>
 
                                     <a href="index.php?action=tacheX&idList=<?=$list->getId()?>" class="view">
@@ -126,55 +127,55 @@
                         <?php
                             }
                             ?>
-                            <form>
-                                <div class="col-md-3" >
-                                    <div class=" detailsAdd" style="text-align: center">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" style="all:unset; cursor: pointer"><p style="font-size: 70px">+</p></button>
-                                        <div class="modal fade" id="modalAdd" tabindex="-1000" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalAddTitre">Modal title</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body" >
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1">Nom</span>
-                                                            </div><p>
-                                                                <?php if (isset($errNom)) { echo $errNom; } ?>
-                                                                <label for="Nom">Nom</label><br>
-                                                                <input type="text" name="Nom" id="Nom" placeholder="Nom"<?php if (isset($nom)) { echo 'value="'.$nom.'"';}  ?>>
-                                                            </p>
+                            <?php
+                            if(isset($_SESSION['user']) ){?>
+                                <form action="?action=addList" method="post">
+                                    <div class="col-md-3" >
+                                        <div style="text-align: center">
+                                            <div class="detailsAdd" >
+                                                <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" style="all:unset; cursor: pointer"><p style="font-size: 70px">+</p></button>
+                                            </div>
+                                            <div class="modal fade" id="modalAdd" tabindex="-1000" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalAddTitre">Add List</h5>
+                                                            <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
                                                         </div>
-
-                                                        <div class="input-group mb-3">
-                                                            <select name="visibilite" class="custom-select" id="inputGroupSelect01">
-                                                                <option value="0" selected>Public</option>
-                                                                <option value="1">Private</option>
-                                                            </select>
+                                                        <div class="modal-body" >
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1">@</span>
+                                                                </div>
+                                                                <input type="text" name="listName" class="form-control" placeholder="Name" <?php if (isset($nom)) { echo 'value="'.$nom.'"';}  ?> aria-label="Username" aria-describedby="basic-addon1">
+                                                            </div>
+                                                            <div class="input-group mb-3">
+                                                                <select name="listVisibilite" class="custom-select" id="inputGroupSelect01">
+                                                                    <option value="1" selected>Public</option>
+                                                                    <option value="0">Private</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="input-group mb-3"  >
+                                                                <?php if (isset($errDescription)) { echo $errDescription; } ?>
+                                                                <textarea style="width: 500px;height: 150px" type="text" name="listDescription" id="Description" placeholder="Description"<?php if (isset($description)) { echo 'value="'.$description.'"';}  ?>></textarea>
+                                                            </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" id="isSubmit" class="btn btn-primary">Save</button>
                                                         </div>
-                                                        <p>
-                                                            <?php if (isset($errDescription)) { echo $errDescription; } ?>
-                                                            <label for="Description">Description</label><br>
-                                                            <textarea type="text" name="Description" id="Description" placeholder="Description"<?php if (isset($description)) { echo 'value="'.$description.'"';}  ?>></textarea>
-                                                        </p>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                        <button type="button" id="isSubmit" class="btn btn-primary">Sauvegarder</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <?php if (isset($nom) && isset($visibilite) && isset($description)){
-                                echo "<strong>Les informations saisies sont :</strong> <br><strong>Nom :</strong> $nom <br> <strong>Visibiliter :</strong> $visibilite <br> <strong>Description :</strong> $description <br> <strong>La liste a été crée est ajouter au home <strong>";
-                            } ?>
-                            </form>
+                                <?php if (isset($nom) && isset($visibilite) && isset($description)){
+                                    echo "<strong>Les informations saisies sont :</strong> <br><strong>Nom :</strong> $nom <br> <strong>Visibiliter :</strong> $visibilite <br> <strong>Description :</strong> $description <br> <strong>La liste a été crée est ajouter au home <strong>";
+                                }?>
+                                </form>
+                            <?php }?>
                         </div>
                     </div>
                 </div>
@@ -185,28 +186,7 @@
                 print ("utilisation anormale de la homeList");
             }
         ?>
-<?php
-    if (isset($_POST['isSubmit']) && $_POST['isSubmit']==1) {
 
-        if (empty($_POST['nom'])) {
-        $errNom='Il faut renseigné le ';
-        } else {
-        $nom=$_POST['nom'];
-        }
-
-        if ($_POST['visibilite']=="0") {
-            $visibilite=$_POST['Public'];
-        } else {
-            $visibilite=$_POST['Priver'];
-        }
-
-        if (empty($_POST['description'])) {
-        $errDescription='Il faut mettre une ';
-        } else {
-        $description=$_POST['description'];
-        }
-    }
-?>
 <script>
         function popUpConfirmationDelete(nom,id) {
             let text = "Are you sure you want to delete this list "+ nom +"\nEither OK or Cancel.";
