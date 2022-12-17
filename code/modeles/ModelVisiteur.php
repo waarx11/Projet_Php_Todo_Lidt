@@ -35,6 +35,16 @@ class ModelVisiteur
         return $gwTache->supprTachePublic($idTask,$_SESSION['user'] ?? null);
     }
 
+    public static function taskById($idTask){
+        $gwTache = new GatewayTache();
+        return $gwTache->getTachePublic($idTask,$_SESSION['user'] ?? null);
+    }
+    public static function updateTask($idTask,$name,$repet,$priorite){
+        $gwTache = new GatewayTache();
+
+        return $gwTache->editTachePublic($idTask,$name,$repet,$priorite,$_SESSION['user'] ?? null);
+    }
+
     public static function updateCheckTaskPublic(string $idTaskVerif)
     {
         $gwTache = new GatewayTache();

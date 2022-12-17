@@ -91,7 +91,7 @@
                                                   ?> onchange="updateBaseCheck(<?php echo $tache->getId()?>)"
                                               />
                                               <span class="strikeThroughText" >
-                                                 <p><?=$tache->getNom()?></p>
+                                                 <p style="margin: 5px" ><?=$tache->getNom()?></p>
                                               </span>
 
                                       </div>
@@ -106,7 +106,7 @@
                                                     </svg>
                                               </button>
 
-                                            <button class="border-0 btn-transition btn btn-outline-success" >
+                                            <button class="border-0 btn-transition btn btn-outline-success" onclick="edit( '<?php echo $tache->getId()?>')" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -144,13 +144,15 @@
                                         </button>
                                     </div>
                                     <div class="modal-body" >
+                                        <?php if (isset($dVueEreur['tacheName'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tacheName'].'</div>'; } ?>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">@</span>
                                             </div>
-                                            <input type="text" name="tacheName" class="form-control" placeholder="Name" <?php if (isset($nom)) { echo 'value="'.$nom.'"';}  ?> aria-label="Username" aria-describedby="basic-addon1">
+                                            <input type="text" name="tacheName" class="form-control" placeholder="Name" <?php if (isset($tacheName)) { echo 'value="'.$tacheName.'"';}  ?> aria-label="Username" aria-describedby="basic-addon1">
                                         </div>
 
+                                        <?php if (isset($dVueEreur['tacheRepete'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tacheRepete'].'</div>'; } ?>
                                         <div class="input-group mb-3">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" name="tacheRepete" class="custom-control-input" id="tacheRepete">
@@ -158,34 +160,38 @@
                                             </div>
                                         </div>
 
+                                        <?php if (isset($dVueEreur['tachePriorite'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tachePriorite'].'</div>'; } ?>
                                         <div class="input-group mb-3"  >
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">Priorty of the task</span>
                                             </div>
-                                            <input type="number" id="tachePriorite" name="tachePriorite" min="1" >
-
+                                            <input type="number" id="tachePriorite" name="tachePriorite" min="1"   <?php if (isset($tachePriorite)) { echo 'value="'.$tachePriorite.'"';}  ?>>
                                         </div>
+
                                         <div class="input-group mb-3"  >
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">Finish date</span>
                                             </div>
                                         </div>
+                                        <?php if (isset($dVueEreur['tacheDay'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tacheDay'].'</div>'; } ?>
+                                        <?php if (isset($dVueEreur['tacheMonth'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tacheMonth'].'</div>'; } ?>
+                                        <?php if (isset($dVueEreur['tacheYear'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tacheYear'].'</div>'; } ?>
 
                                         <div class="input-group mb-3"  >
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1" >Year</span>
                                             </div>
-                                            <input style="width: 60px" type="number" id="tacheYear" name="tacheYear" min="1" >
+                                            <input style="width: 60px" type="number" id="tacheYear" name="tacheYear" min="1" <?php if (isset($tacheYear)) { echo 'value="'.$tacheYear.'"';}  ?>>
 
                                             <div class="input-group-prepend">
                                                 <span  style="width: 60px"  class="input-group-text" id="basic-addon1">Day</span>
                                             </div>
-                                            <input type="number" id="tacheDay" name="tacheDay" min="1" max="31">
+                                            <input type="number" id="tacheDay" name="tacheDay" min="1" max="31" <?php if (isset($tacheDay)) { echo 'value="'.$tacheDay.'"';}  ?>>
 
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">Month</span>
                                             </div>
-                                            <select class="form-control" name="tacheMonth" id="tacheMonth">
+                                            <select class="form-control" name="tacheMonth" id="tacheMonth"  <?php if (isset($tacheMonth)) { echo 'value="'.$tacheMonth.'"';}  ?>>
                                                 <option value="1" >January</option>
                                                 <option value="2" >February</option>
                                                 <option value="3" >March</option>
@@ -214,6 +220,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
       </div>
     </div>
@@ -232,6 +239,10 @@
             location.replace("index.php?action=tacheCheked&idTask="+id+"&idList=<?=$listName?>");
 
         }
+
+        function edit(id){
+            location.replace("index.php?action=tacheXEdit&idTask="+id+"&idList=<?=$listName?>");
+        }
     </script>
 
                             
@@ -240,10 +251,18 @@
 
                 <?php
             }
-            else {
-                print ("erreur !!<br>");
-                print ("utilisation anormale de la homeList");
-            }
+            else {?>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="alert alert-danger" role="alert" >
+                    <h4 class="alert-heading">Un erreur est survenue</h4>
+                    <p>Utilisation pas normal de page tache</p>
+                    <hr>
+                    <p class="mb-0">Désolé pour cet erreur</p>
+                </div>
+            </div>
+
+            <?php }
         ?>
 
     </body>

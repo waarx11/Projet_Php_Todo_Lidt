@@ -3,14 +3,7 @@
 class CtrlUtilisateur
 {
     function __construct() {
-        global $rep,$vues; // nécessaire pour utiliser variables globales
-// on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
-        //session_start();
-
-
-//debut
-
-//on initialise un tableau d'erreur
+        global $rep,$vues;
         $dVueEreur = array ();
         try{
             $action=$_REQUEST['action'] ?? null;
@@ -34,14 +27,13 @@ class CtrlUtilisateur
 
                 default:
                     $dVueEreur[] =	"Erreur d'appel php";
-                    require ($rep.$vues['vuephp1']);
+                    require ($rep.$vues['erreur']);
                     break;
 
             }
 
         } catch (PDOException $e)
         {
-            //si erreur BD, pas le cas ici
             $dVueEreur[] =	"Erreur De base de donne!!! ";
             require ($rep.$vues['erreur']);
 
@@ -52,20 +44,17 @@ class CtrlUtilisateur
             require ($rep.$vues['erreur']);
         }
 
-
-        //fin
         exit(0);
-    }//fin constructeur
+    }
 
     public function Reinit() {
-        global $rep,$vues; // nécessaire pour utiliser variables globales
+        global $rep,$vues;
         $_COOKIE['path']="/home/connected";
 
         $dVue = ModelVisiteur::getPublicList();
         require ($rep.$vues['homeList']);
     }
     public function checkedPrc($id){
-
         return ModelVisiteur::getCheckedPrc($id);
     }
     public function listDelete(){

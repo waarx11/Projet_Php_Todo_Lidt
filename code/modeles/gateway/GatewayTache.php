@@ -47,9 +47,12 @@ class GatewayTache
             ':user' => array($idUser ,$idUser == null ? PDO::PARAM_NULL :  PDO::PARAM_STR_CHAR)
 
         ))){
-            return true;
+            if($this->conx->getStmt()->rowCount()>0){
+                return true;
+            }
+            throw new Exception("Error Edit an task not exist or not belong to you !!");
         } else {
-            throw new PDOException("Error delete an task not exist or not belong to you !!");
+            throw new PDOException("Error Edit an task not exist or not belong to you !!");
         }
     }
     public function supprTachePublic(string $id,$idUser)
@@ -69,6 +72,55 @@ class GatewayTache
             throw new PDOException("Error delete an task not exist or not belong to you !!");
         }
     }
+
+    public function editTachePublic($idTask,$name,$repet,$priorite,$idUser)
+    {
+        $query = "UPDATE TACHE SET nom=:name, priorite=:priorite, repete=:repet WHERE id=:id AND (userid=:user OR userid IS NULL ) ;";
+        if ($this->conx->executeQuery($query, array(
+            ':id' => array($idTask, PDO::PARAM_INT),
+            ':name' => array($name, PDO::PARAM_STR_CHAR),
+            ':repet' => array($repet, PDO::PARAM_BOOL),
+            ':priorite' => array($priorite, PDO::PARAM_INT),
+            ':user' => array($idUser , $idUser == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)
+
+        ))){
+
+            if($this->conx->getStmt()->rowCount()>0){
+                echo "heloo";
+
+                return true;
+            }
+            else {
+                return false;
+            }
+        } else {
+            throw new PDOException("Error delete an task not exist or not belong to you !!");
+        }
+    }
+
+    public function getTachePublic($idTask, $idUser)
+    {
+        $query = "SELECT * FROM TACHE WHERE id=:id AND ((userid=:user OR userid IS NULL ) OR liste IN (SELECT id FROM LISTE WHERE userid=:user));";
+        if ($this->conx->executeQuery($query, array(
+            ':id' => array($idTask, PDO::PARAM_INT),
+            ':user' => array($idUser , $idUser == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)
+
+        ))){
+            if ($this->conx->getStmt()->rowCount()==1){
+                Foreach ($this->conx->getResults() as $row) {
+                    if($row['userid']==null){
+                        $row['userid']='anonyme';
+                    }
+                   return new Tache($row['id'],$row['nom'],$row['dateCreation'],$row['dateFin'],$row['repete'],(int)$row['priorite'],$row['checked'],$row['userid'],$row['liste'] );
+                }
+            }
+            return null;
+
+        } else {
+            throw new PDOException("Error Get a task not exist or not belong to you !!");
+        }
+    }
+
     public function deleteTacheByList(string $liste,string $user)
     {
         $query = "DELETE FROM TACHE WHERE liste IN (SELECT id FROM LISTE where userid=:user and id=:liste) ";
@@ -106,4 +158,6 @@ class GatewayTache
             throw new PDOException("Class GatewayTache findByName : la query n'est pas executable");
         }
     }
+
+
 }

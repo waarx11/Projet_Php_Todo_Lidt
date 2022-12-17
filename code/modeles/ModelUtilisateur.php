@@ -40,12 +40,13 @@ class ModelUtilisateur
         $gtw=new GatewayUtilisateur();
         $role="Utilisateur";
         $mdp=password_hash($password, PASSWORD_DEFAULT);
-        if($gtw->inserUser(new Utilisateur($userIdSignUp,$userNameSignUp,$userMail,$role),$mdp)){
-            echo $userIdSignUp,$password;
-            return ModelUtilisateur::connect($userIdSignUp,$password);
+        if(! ($gtw->userIdExiste($userIdSignUp)) ){
+            if($gtw->inserUser(new Utilisateur($userIdSignUp,$userNameSignUp,$userMail,$role),$mdp)){
+                return ModelUtilisateur::connect($userIdSignUp,$password);
+            }
         }
         else{
-            return null;
+            return false;
         }
     }
 

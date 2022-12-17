@@ -46,6 +46,23 @@ class GatewayUtilisateur
 
     }
 
+    public function userIdExiste($userIdSignUp)
+    {
+        $query = "SELECT * FROM UTILISATEUR WHERE id=:id";
+        if ($this->conx->executeQuery($query, array(':id' => array($userIdSignUp, PDO::PARAM_STR_CHAR)))) {
+            if($this->conx->getStmt()->rowCount()>0){
+                return true;
+            }
+            else{
+                return false;
+            }
 
-    
+        } else {
+            throw new PDOException("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
+        }
+
+
+    }
+
+
 }

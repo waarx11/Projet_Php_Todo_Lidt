@@ -181,10 +181,19 @@
                 </div>
                 <?php
             }
-            else {
-                print ("erreur !!<br>");
-                print ("utilisation anormale de la homeList");
-            }
+        else {?>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="alert alert-danger" role="alert" >
+                    <h4 class="alert-heading">Un erreur est survenue</h4>
+                    <p>Utilisation pas normal de page tache</p>
+                    <hr>
+                    <p class="mb-0">Désolé pour cet erreur</p>
+                </div>
+            </div>
+
+            <?php }
+            ?>
         ?>
 
 <script>

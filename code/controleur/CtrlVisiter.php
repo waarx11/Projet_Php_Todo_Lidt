@@ -2,17 +2,13 @@
 class CtrlVisiter {
 
 function __construct() {
-	global $rep,$vues; // nécessaire pour utiliser variables globales
-// on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
-
-//on initialise un tableau d'erreur
+	global $rep,$vues;
 	$dVueEreur = array ();
 	try{
 		$action=$_REQUEST['action'] ?? null;
 
 		switch($action) {
 
-	//pas d'action, on rinitialise 1er appel
 		case NULL:
 			$this->Reinit();
 			break;
@@ -37,6 +33,15 @@ function __construct() {
 			$this->tacheXDelet();
 			break;
 
+		case "tacheXUpdate":
+			error_reporting(E_ERROR | E_PARSE);
+
+			$this->tacheXUpdate();
+			break;
+		case "tacheXEdit" :
+			$this->tacheXEdit();
+			break;
+
 		case "tacheCheked":
 			$this->tacheCheked();
 			break;
@@ -49,48 +54,41 @@ function __construct() {
 			$this->signUpUser();
 			break;
 
-
-
 		default:
 			$dVueEreur[] =	"Erreur d'appel php";
-			require ($rep.$vues['vuephp1']);
+			require ($rep.$vues['erreur']);
 			break;
 	}
 
 	} catch (PDOException $e)
 	{
-		//si erreur BD, pas le cas ici
 		$dVueEreur[] =	"Erreur inattendue!!! ";
 		require ($rep.$vues['erreur']);
-
 	}
 	catch (Exception $e2)
-		{
+	{
 		$dVueEreur[] =	$e2->getMessage();
 		require ($rep.$vues['erreur']);
-		}
-
-
-	//fin
+	}
 	exit(0);
-}//fin constructeur
+}
 
 
-function Reinit() {
-	global $rep,$vues; // nécessaire pour utiliser variables globales
+function Reinit(){
+	global $rep,$vues;
 	$_COOKIE['path']="/home";
 	$dVue = ModelVisiteur::getPublicList();
-
 	require ($rep.$vues['homeList']);
 }
+
 function connectionPage() {
-	global $rep,$vues; // nécessaire pour utiliser variables globales
+	global $rep,$vues;
 	$_COOKIE['path']="/home/login";
 	require ($rep.$vues['signUtilisateur']);
 }
 
 function signUpPage() {
-	global $rep,$vues; // nécessaire pour utiliser variables globales
+	global $rep,$vues;
 	$_COOKIE['path']="/home/signup";
 
 	require ($rep.$vues['signup']);
@@ -108,7 +106,6 @@ function tacheX() {
 }
 
 function checkedPrc($id){
-
 	return ModelVisiteur::getCheckedPrc($id);
 }
 
@@ -128,8 +125,78 @@ private function tacheXDelet()
 	$listName =  $idList;
 	require ($rep.$vues['tacheX']);
 
-	//header.location; pour changer le location
 }
+
+	private function tacheXEdit()
+	{
+		global $rep,$vues;
+
+		$idTask=$_REQUEST['idTask'] ?? null;
+		$idTaskVerif = Validation::validateInt($idTask);
+		$task= ModelVisiteur::taskById($idTaskVerif);
+		if($task==null){
+			$dVueErreur['supperTache']="le tache n'exsite pas ou n'appartient pas à vous";
+			$_COOKIE['path']="/home/list/task";
+			$idList=$_REQUEST['idList'] ?? null;
+			$idListeVerif = Validation::validateInt($idList);
+			$dVue =  ModelVisiteur::getTachesPublic($idListeVerif);
+			$listName =  $idList;
+			require ($rep.$vues['tacheX']);
+		}else{
+			$_COOKIE['path']="/home/list/task/edit";
+			$idList=$_REQUEST['idList'] ?? null;
+			$idListeVerif = Validation::validateInt($idList);
+			require ($rep.$vues['editTache']);
+		}
+	}
+
+	private function tacheXUpdate()
+	{
+		global $rep,$vues;
+		$error=false;
+		$idTask=$_REQUEST['idTask'] ?? null;
+		$idTaskVerif = Validation::validateInt($idTask);
+
+		if (empty($_POST['tacheName']) ) {
+			$dVueEreur['tacheName'] = 'Il faut renseigné le nom de la tache ';
+			$error=true;
+		} else {
+			$tacheName = Validation::cleanString($_POST['tacheName']);
+		}
+
+		if (empty($_POST['tachePriorite']) ) {
+			$dVueEreur['tachePriorite'] = 'Il faut renseigné le priorité ';
+			$error=true;
+		} else {
+			if($_POST['tachePriorite']<=0  ){
+				$dVueEreur['tachePriorite'] = "le proproité doit être postive";
+				$error=true;
+			}else{
+				$tachePriorite = $_POST['tachePriorite'];
+			}
+		}
+		if($error) {
+			$_COOKIE['path']="/home/list/task/edit";
+			$listName=$_POST['tacheListe'];
+			$task= ModelVisiteur::taskById($idTaskVerif);
+			require ($rep.$vues['editTache']);
+		}
+
+		else{
+			$tacheRepete=$_POST['tacheRepete'];
+			if(ModelVisiteur::updateTask($idTaskVerif,$tacheName,$tacheRepete ?? false,$tachePriorite)){
+				header("LOCATION:"."index.php?action=tacheX&idList=".$_REQUEST['idList']);
+			}
+			else{
+				$task= ModelVisiteur::taskById($idTaskVerif);
+				$listName=$_POST['tacheListe'];
+				require ($rep.$vues['editTache']);
+			}
+
+		}
+
+	}
+
 	private function tacheCheked()
 	{
 		$idTask=$_REQUEST['idTask'] ?? null;
@@ -137,7 +204,6 @@ private function tacheXDelet()
 		ModelVisiteur::updateCheckTaskPublic($idTaskVerif);
 		$idList=$_REQUEST['idList'] ?? null;
 		header("LOCATION: index.php?action=tacheX&idList=".$idList);
-		//$this->tacheX();
 	}
 
 
@@ -202,7 +268,6 @@ private function tacheXDelet()
 					$error=true;
 					$dErreurInscription['paswordSignUpNotEquals']="les password ne sont pas coherent";
 				}
-
 			}
 		}
 		if($error){
@@ -211,63 +276,93 @@ private function tacheXDelet()
 			if(ModelUtilisateur::creationCompte($userIdSignUp, $userNameSignUp, $userMail, $paswordSignUpEquals)){
 				header("LOCATION: index.php?action=connected");
 			}
-
+			else{
+				$dErreurInscription['userIdSignUpEmpty']='Id already existe';
+				require ($rep.$vues['signup']);
+			}
 		}
 	}
 
 	private function tacheXAdd()
 	{
+		global $rep,$vues;
 		if (empty($_POST['tacheName']) ) {
-			$dVueEreur['tacheName'] = 'Il faut renseigné le ';
+			$dVueEreur['tacheName'] = 'Il faut renseigné le nom de la tache ';
 			$error=true;
 		} else {
-			$tacheName = $_POST['tacheName'];
+			$tacheName = Validation::cleanString($_POST['tacheName']);
 		}
+
 		if (empty($_POST['tacheYear']) ) {
-			$dVueEreur['tacheYear'] = 'Il faut renseigné le ';
+			$dVueEreur['tacheYear'] = "Il faut renseigné l'anne de la tache";
 			$error=true;
 		} else {
-			$tacheYear = $_POST['tacheYear'];
+			if($_POST['tacheYear']<0){
+				$dVueEreur['tacheYear'] = "l'anné doit etre positive";
+				$error=true;
+			}else{
+				$tacheYear = $_POST['tacheYear'];
+			}
 		}
+
 		if (empty($_POST['tacheDay']) ) {
-			$dVueEreur['tacheDay'] = 'Il faut renseigné le ';
+			$dVueEreur['tacheDay'] = 'Il faut renseigné le jour';
+			$error=true;
+		}else {
+			if($_POST['tacheDay']<=0 ||$_POST['tacheDay']>31  ){
+				$dVueEreur['tacheDay'] = "le jour doit etre positive et plus petit que 31";
+				$error=true;
+			}else{
+				$tacheDay = $_POST['tacheDay'];
+			}
+		}
+
+		if (empty($_POST['tacheMonth'])  ) {
+			$dVueEreur['tacheMonth'] = 'Il faut renseigné le mois';
 			$error=true;
 		} else {
-			$tacheDay = $_POST['tacheDay'];
+			if($_POST['tacheMonth']<=0 ||$_POST['tacheMonth']>12  ){
+				$dVueEreur['tacheMonth'] = "le jour doit etre positive et plus petit que 31";
+				$error=true;
+			}else{
+				$tacheMonth = $_POST['tacheMonth'];
+			}
 		}
-		if (empty($_POST['tacheMonth']) ) {
-			$dVueEreur['tacheMonth'] = 'Il faut renseigné le ';
-			$error=true;
-		} else {
-			$tacheMonth = $_POST['tacheMonth'];
-		}
-		$tacheDateFin=$tacheYear."-".$tacheMonth."-".$tacheDay;
+
 		if (empty($_POST['tacheListe']) ) {
-			$dVueEreur['tacheListe'] = 'Il faut renseigné le ';
+			$dVueEreur['tacheListe'] = 'Il faut renseigné le liste ';
 			$error=true;
 		} else {
 			$tacheListe = $_POST['tacheListe'];
 		}
 
 		if (empty($_POST['tachePriorite']) ) {
-			$dVueEreur['tachePriorite'] = 'Il faut renseigné le ';
+			$dVueEreur['tachePriorite'] = 'Il faut renseigné le priorité ';
 			$error=true;
 		} else {
-			$tachePriorite = $_POST['tachePriorite'];
+			if($_POST['tachePriorite']<=0  ){
+			$dVueEreur['tachePriorite'] = "le proproité doit être postive";
+			$error=true;
+			}else{
+				$tachePriorite = $_POST['tachePriorite'];
+			}
 		}
 
-		if (empty($_POST['tacheRepete']) ) {
-			$dVueEreur['tacheRepete'] = 'Il faut renseigné le ';
-			$_POST['tacheRepete']=false;
-		} else {
-			$tacheRepete = $_POST['tacheRepete'];
+		if($error) {
+			$_COOKIE['path']="/home/list/task";
+			$listName=$_POST['tacheListe'];
+			$dVue =  ModelVisiteur::getTachesPublic($listName);
+			require ($rep.$vues['tacheX']);
 		}
-
-		ModelVisiteur::ajoutTache(new TacheModal($tacheName,$tacheDateFin,$tacheRepete ?? false,$tachePriorite,$_SESSION['user'] ?? null,$tacheListe));
-		header("LOCATION:".$_POST['pageAct']);
+		else{
+			$tacheDateFin=$tacheYear."-".$tacheMonth."-".$tacheDay;
+			$tacheRepete=$_POST['tacheRepete'];
+			ModelVisiteur::ajoutTache(new TacheModal($tacheName,$tacheDateFin,$tacheRepete ?? false,$tachePriorite,$_SESSION['user'] ?? null,$tacheListe));
+			header("LOCATION:".$_POST['pageAct']);
+		}
 
 	}
 
 
-}//fin class
+}
 ?>
