@@ -45,7 +45,10 @@ if (isset($task) )
                                 <?php if (isset($dVueEreur['tacheRepete'])) { echo '<div class="alert alert-danger" role="alert">'. $dVueEreur['tacheRepete'].'</div>'; } ?>
                                 <div class="input-group mb-3">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="tacheRepete" class="custom-control-input" id="tacheRepete">
+                                        <input type="checkbox" name="tacheRepete" class="custom-control-input" id="tacheRepete" <?php if($task->getRepetition()) {
+                                            echo 'checked';
+                                        }
+                                        ?> >
                                         <label class="custom-control-label" for="tacheRepete">Repeative Task</label>
                                     </div>
                                 </div>
