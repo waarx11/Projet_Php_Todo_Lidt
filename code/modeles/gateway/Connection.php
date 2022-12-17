@@ -33,6 +33,14 @@ class Connection extends PDO
 		return $this->stmt->fetchall();
 
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStmt()
+	{
+		return $this->stmt;
+	}
 }
 
 ?>

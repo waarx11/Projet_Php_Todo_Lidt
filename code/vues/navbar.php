@@ -1,6 +1,6 @@
 <header>
             <nav class="navbar sticky-top  navbar-dark navbar-expand-lg myNav"  >
-                <a class="navbar-brand title" href="index.php?action">TDL <p style="font-size: 15px"><?=$_COOKIE['path'] ?? "accept cookie"?></p> </a>
+                <a class="navbar-brand title" href="index.php?action">TDL <p style="font-size: 15px"><?=$_COOKIE['path'] ?? "Error"?></p> </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

@@ -9,29 +9,40 @@ class ModelUtilisateur
     }
     
 	 public static function login($login,$mdp){
+        global $rep,$vues;
+         try {
+             if(! ModelUtilisateur::connect($login,$mdp)){
+                 $dvueError["loginError"]="mot de pass est incorrect ou l'utilisateur n'esxiste pas";
+                 require ($rep.$vues['signUtilisateur']);
+             }else{
+                 $_REQUEST['action']="connected";
+                 new CtrlUtilisateur();
+             }
+         }catch (Exception $e){
+             $dvueError["loginError"]="mot de pass est incorrect ou l'utilisateur n'esxiste pas";
+             require ($rep.$vues['signUtilisateur']);
+         }
+
+    }
+    public static function connect($login,$mdp){
+
         $gtw=new GatewayUtilisateur();
-        $login=Validation::validateUser($login);
-        $mdp=Validation::validatePassword($mdp);
-        if( password_verify($mdp,$gtw->getMdpHash($login ))){
+        $mdpHash=$gtw->getMdpHash($login);
+        if( password_verify($mdp,$mdpHash)){
             $_SESSION['role']= "Utilisateur" ;
             $_SESSION['user']=$login;
             return true;
         }
-        else{
-            return null;
-        }
+        return false;
     }
 
     public static function creationCompte($userIdSignUp,$userNameSignUp, $userMail, $password){
         $gtw=new GatewayUtilisateur();
-        $id=Validation::validateUser($userIdSignUp);
-        $userNameSignUp=Validation::validateUser($userNameSignUp);
-        $userMail=Validation::validateMail($userMail);
-        $password=Validation::validatePassword($password);
         $role="Utilisateur";
         $mdp=password_hash($password, PASSWORD_DEFAULT);
-        if($gtw->inserUser(new Utilisateur($id,$userNameSignUp,$userMail,$role),$mdp)){
-            return ModelUtilisateur::login($userNameSignUp,$mdp);
+        if($gtw->inserUser(new Utilisateur($userIdSignUp,$userNameSignUp,$userMail,$role),$mdp)){
+            echo $userIdSignUp,$password;
+            return ModelUtilisateur::connect($userIdSignUp,$password);
         }
         else{
             return null;

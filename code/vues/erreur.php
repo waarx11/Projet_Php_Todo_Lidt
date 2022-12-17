@@ -14,19 +14,13 @@
 <?php
     require ($rep.$vues['navBar']);
 ?>
-
-
-
-    <h1>ERREUR !!!!!</h1>
+    <div class="alert alert-danger" role="alert">Un erreur est survenue</div>
     <?php
-    if (isset($dVueEreur)) {
-        foreach ($dVueEreur as $value){
-            echo $value;
+        if (isset($dVueEreur)) {
+            foreach ($dVueEreur as $value){
+                echo $value;
+            }
         }
-    }
     ?>
-
-
-
-    </body>
+ </body>
 </html>

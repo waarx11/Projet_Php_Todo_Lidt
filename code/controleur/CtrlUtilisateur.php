@@ -42,7 +42,7 @@ class CtrlUtilisateur
         } catch (PDOException $e)
         {
             //si erreur BD, pas le cas ici
-            $dVueEreur[] =	"Erreur inattendue!!! ";
+            $dVueEreur[] =	"Erreur De base de donne!!! ";
             require ($rep.$vues['erreur']);
 
         }
@@ -76,23 +76,37 @@ class CtrlUtilisateur
     }
     private function addList()
     {
+        global $rep,$vues;
+        $error=false;
         if (empty($_POST['listName']) ) {
-            $dVueEreur['nom'] = 'Il faut renseigné le ';
+            $dVueEreur['nom'] = 'nom vide ';
             $error=true;
         } else {
             $listName = $_POST['listName'];
+            $listName=Validation::cleanString($listName);
+
         }
         if (empty($_POST['listDescription']) ) {
-            $dVueEreur['listDescription'] = 'Il faut renseigné le ';
+            $dVueEreur['description'] = 'description vide';
             $error=true;
         } else {
             $listDescription = $_POST['listDescription'];
+            $listDescription=Validation::cleanString($listDescription);
         }
-        $listVisibilite=$_POST['listVisibilite'];
-        ModelUtilisateur::ajoutList(new ListModal($listName,$listVisibilite,$listDescription,$_SESSION['user']));
-        $_REQUEST['action']='connected';
-        new CtrlUtilisateur();
+        if($error){
+            $_COOKIE['path']="/home/connected";
 
+            $dVue = ModelVisiteur::getPublicList();
+            require ($rep.$vues['homeList']);
+
+        }
+        else{
+            $listVisibilite=$_POST['listVisibilite'];
+
+            ModelUtilisateur::ajoutList(new ListModal($listName,$listVisibilite,$listDescription,$_SESSION['user']));
+            $_REQUEST['action']='connected';
+            new CtrlUtilisateur();
+        }
     }
 
     public function logout()

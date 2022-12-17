@@ -67,7 +67,7 @@
                                             content: "";
                                             width: 5px ;
                                             height: 100%;
-                                            background-coLor: #ff5722;
+                                            background-coLor: #E67E22 ;
                                             position: absolute;
                                             left: 0;
                                             top: 0;
@@ -81,7 +81,7 @@
 
                                         }
                                         .details<?php echo $list->getId()?>:hover h2,.details<?php echo $list->getId()?>:hover p,.details<?php echo $list->getId()?>:hover h6{
-                                            color: #948d6f;
+                                            color: #283747;
                                         }
                                         .details<?php echo $list->getId()?>:hover a{
                                             font-weight: bold;
@@ -145,11 +145,13 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body" >
+                                                            <?php if (isset($dVueEreur['nom'])) { echo $dVueEreur['nom']; } ?>
                                                             <div class="input-group mb-3">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1">@</span>
                                                                 </div>
-                                                                <input type="text" name="listName" class="form-control" placeholder="Name" <?php if (isset($nom)) { echo 'value="'.$nom.'"';}  ?> aria-label="Username" aria-describedby="basic-addon1">
+
+                                                                <input type="text" name="listName" class="form-control" placeholder="Name" <?php if (isset($listName)) { echo 'value="'.$listName.'"';}  ?> aria-label="Username" aria-describedby="basic-addon1">
                                                             </div>
                                                             <div class="input-group mb-3">
                                                                 <select name="listVisibilite" class="custom-select" id="inputGroupSelect01">
@@ -157,8 +159,8 @@
                                                                     <option value="0">Private</option>
                                                                 </select>
                                                             </div>
+                                                            <?php if (isset($dVueEreur['description'])) { echo $dVueEreur['description']; } ?>
                                                             <div class="input-group mb-3"  >
-                                                                <?php if (isset($errDescription)) { echo $errDescription; } ?>
                                                                 <textarea style="width: 500px;height: 150px" type="text" name="listDescription" id="Description" placeholder="Description"<?php if (isset($description)) { echo 'value="'.$description.'"';}  ?>></textarea>
                                                             </div>
                                                         <div class="modal-footer">
@@ -171,9 +173,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php if (isset($nom) && isset($visibilite) && isset($description)){
-                                    echo "<strong>Les informations saisies sont :</strong> <br><strong>Nom :</strong> $nom <br> <strong>Visibiliter :</strong> $visibilite <br> <strong>Description :</strong> $description <br> <strong>La liste a été crée est ajouter au home <strong>";
-                                }?>
+
                                 </form>
                             <?php }?>
                         </div>

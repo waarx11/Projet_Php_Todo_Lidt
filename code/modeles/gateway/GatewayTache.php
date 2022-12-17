@@ -18,6 +18,7 @@ class GatewayTache
             }
             $resArray[ $row['id'] ]=new Tache($row['id'],$row['nom'],$row['dateCreation'],$row['dateFin'],$row['repete'],(int)$row['priorite'],$row['checked'],$row['userid'],$row['liste'] );
         }
+
         return $resArray;
     }
     public function addTache(TacheModal $tache)
@@ -59,7 +60,11 @@ class GatewayTache
             ':user' => array($idUser , $idUser == null ? PDO::PARAM_NULL : PDO::PARAM_STR_CHAR)
 
         ))){
-            return true;
+            if ($this->conx->getStmt()->rowCount()>0){
+                return true;
+            }
+            return false;
+
         } else {
             throw new PDOException("Error delete an task not exist or not belong to you !!");
         }

@@ -29,19 +29,10 @@ class ModelVisiteur
         $gwTache->supprTache($id);
     }
 
-    public static function createList(){
-        $gwListe = new GatewayListe();
-        $nom = Validation::validateString($_POST["nom"]);
-        $visibilite = Validation::validateVisibiliter($_POST["visibilite"]);
-        $description = Validation::validateString($_POST["description"]);
-        $userid = NULL;
-        $id=0;
-        $gwListe->inserListe(new Liste($id,$nom, $visibilite, $description, $userid));
-    }
 
     public static function removeTask($idTask){
         $gwTache = new GatewayTache();
-        $gwTache->supprTachePublic($idTask,$_SESSION['user'] ?? null);
+        return $gwTache->supprTachePublic($idTask,$_SESSION['user'] ?? null);
     }
 
     public static function updateCheckTaskPublic(string $idTaskVerif)

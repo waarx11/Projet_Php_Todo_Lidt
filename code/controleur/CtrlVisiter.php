@@ -2,7 +2,6 @@
 class CtrlVisiter {
 
 function __construct() {
-	//$_SESSION['user']='rami';
 	global $rep,$vues; // nécessaire pour utiliser variables globales
 // on démarre ou reprend la session si necessaire (préférez utiliser un modèle pour gérer vos session ou cookies)
 
@@ -115,10 +114,19 @@ function checkedPrc($id){
 
 private function tacheXDelet()
 {
+	global $rep,$vues;
 	$idTask=$_REQUEST['idTask'] ?? null;
 	$idTaskVerif = Validation::validateInt($idTask);
-	ModelVisiteur::removeTask($idTaskVerif);
-	$this->tacheX();
+	if(! ModelVisiteur::removeTask($idTaskVerif)){
+		$dVueErreur['supperTache']="le tache n'appartient pas à vous";
+	}
+
+	$_COOKIE['path']="/home/list/task";
+	$idList=$_REQUEST['idList'] ?? null;
+	$idListeVerif = Validation::validateInt($idList);
+	$dVue =  ModelVisiteur::getTachesPublic($idListeVerif);
+	$listName =  $idList;
+	require ($rep.$vues['tacheX']);
 
 	//header.location; pour changer le location
 }
@@ -135,9 +143,10 @@ private function tacheXDelet()
 
 	private function loginUser()
 	{
+		global $rep,$vues;
 		$error=false;
 		if (empty($_POST['userName'])) {
-			$dVueEreur['userNameEmpty'] = 'Il faut renseigné le ';
+			$dvueError['userNameEmpty'] = 'Il faut renseigné le userName ';
 			$error=true;
 
 		} else {
@@ -145,13 +154,13 @@ private function tacheXDelet()
 		}
 
 		if (empty($_POST['password'])) {
-			$dVueEreur['paswordEmpty'] = 'Il faut renseigné le ';
+			$dvueError['paswordEmpty'] = 'Il faut renseigné le password ';
 			$error=true;
 		} else {
 			$password = $_POST['password'];
 		}
 		if($error){
-			$this->connectionPage();
+			require ($rep.$vues['signUtilisateur']);
 		}else{
 			if (ModelUtilisateur::login($userName, $password) == null) {
 				$dVueEreur['loginResponse'] = "password or/and id are incorrect";
@@ -163,53 +172,46 @@ private function tacheXDelet()
 
 	private function signUpUser(){
 		$error=false;
-		if (empty($_POST['userMail']) || !filter_var($_POST['userMail'],FILTER_VALIDATE_EMAIL)) {
-			$dVueEreur['userMailInvalide'] = 'Il faut renseigné le ';
+		global $rep,$vues;
+		$dErreurInscription=array();
+		if (!Validation::validateMail($_POST['userMail'],$dErreurInscription)) {
 			$error=true;
 		} else {
 			$userMail = $_POST['userMail'];
 		}
-
-		if (empty($_POST['userIdSignUp'])) {
-			$dVueEreur['userIdSignUpEmpty'] = 'Il faut renseigné le ';
+		if (!Validation::validateId($_POST['userIdSignUp'],$dErreurInscription) ) {
 			$error=true;
-
 		} else {
+
 			$userIdSignUp = $_POST['userIdSignUp'];
 		}
-
-		if (empty($_POST['userNameSignUp'])) {
-			$dVueEreur['userNameSignUpEmpty'] = 'Il faut renseigné le ';
+		if (!Validation::validateString($_POST['userNameSignUp'],$dErreurInscription,'userNameSignUpEmpty','Il faut renseigné le nom')) {
 			$error=true;
-
 		} else {
 			$userNameSignUp = $_POST['userNameSignUp'];
 		}
-
-		if (empty($_POST['paswordSignUp'])) {
-			$dVueEreur['paswordSignUpEmpty'] = 'Il faut renseigné le ';
+		if (!Validation::validateString($_POST['paswordSignUp'],$dErreurInscription,'paswordSignUpEmpty','Il faut renseigné le password')) {
 			$error=true;
 		} else {
 			$paswordSignUp = $_POST['paswordSignUp'];
-		}
+			if (!Validation::validateString($_POST['paswordSignUpEquals'],$dErreurInscription,'paswordSignUpNotEquals','Il faut renseigné le passwordRetype') ) {
+				$error=true;
+			} else {
+				$paswordSignUpEquals = $_POST['paswordSignUpEquals'];
+				if($paswordSignUp != $paswordSignUpEquals){
+					$error=true;
+					$dErreurInscription['paswordSignUpNotEquals']="les password ne sont pas coherent";
+				}
 
-		if (empty($_POST['paswordSignUpEquals']) && $_POST['paswordSignUpEquals'] != $_POST['paswordSignUp']) {
-			$dVueEreur['paswordSignUpNotEquals'] = 'Il faut renseigné le ';
-			$error=true;
-		} else {
-			$paswordSignUpEquals = $_POST['paswordSignUpEquals'];
+			}
 		}
 		if($error){
-			$this->signUpPage();
+			require ($rep.$vues['signup']);
 		}else{
-			ModelUtilisateur::creationCompte($userIdSignUp, $userNameSignUp, $userMail, $paswordSignUpEquals);
-			header("LOCATION: index.php?action=connected");
-				
-//			}
-//			else{
-//				echo 'hy';
-//				$dVueEreur['signUpResponse'] = "Impossible de crée le compte utilisateur";
-//			}
+			if(ModelUtilisateur::creationCompte($userIdSignUp, $userNameSignUp, $userMail, $paswordSignUpEquals)){
+				header("LOCATION: index.php?action=connected");
+			}
+
 		}
 	}
 
@@ -263,7 +265,6 @@ private function tacheXDelet()
 
 		ModelVisiteur::ajoutTache(new TacheModal($tacheName,$tacheDateFin,$tacheRepete ?? false,$tachePriorite,$_SESSION['user'] ?? null,$tacheListe));
 		header("LOCATION:".$_POST['pageAct']);
-
 
 	}
 

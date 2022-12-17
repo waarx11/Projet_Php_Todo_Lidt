@@ -26,10 +26,16 @@
             {?>
                     <div class=" d-flex justify-content-center  taskList">
     <div class="col-md-9">
+        <?php if(isset($dVueErreur['supperTache'])){
+            echo '<div class="alert alert-danger" role="alert">' . $dVueErreur['supperTache'] . '</div>';
+        }?>
       <div class="card-hover-shadow-2x mb-5 card">
         <div class="card-header-tab card-header">
           <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-              class="fa fa-tasks"></i>&nbsp;Task <?=$listName?></div>
+              class="fa fa-tasks"></i>&nbsp;Task <?=$listName?>
+
+          </div>
+
           
         </div>
         <div class="scroll-area-sm" style="height: 650px;">
@@ -54,8 +60,25 @@
                                           }
                                           ?>
                                         <div class="custom-checkbox custom-control">
+                                            <?php
+                                            if($tache->getPriorite()<=3) {
+                                                echo '<div class="badge badge-pill badge-info ml-2" style="background-color: #CB4335">Priority '. $tache->getPriorite().'</div>';
+                                            }
+                                            else{
+                                                if($tache->getPriorite()<=6) {
+                                                    echo '<div class="badge badge-pill badge-info ml-2" style="background-color: #E67E22">Priority '. $tache->getPriorite().'</div>';
+                                                }
+                                                    else{
+                                                        if($tache->getPriorite()<=9) {
+                                                            echo '<div class="badge badge-pill badge-info ml-2" style="background-color: #F4D03F">Priority '. $tache->getPriorite().'</div>';
+                                                    }
+                                                        else{
+                                                            echo '<div class="badge badge-pill badge-info ml-2" >Priority '. $tache->getPriorite().'</div>';
 
-                                            <div class="badge badge-pill badge-info ml-2">Priority  <?=$tache->getPriorite()?></div>
+                                                        }
+                                                }
+                                            }
+                                            ?>
 
                                           </div>
 
@@ -190,7 +213,7 @@
                         </div>
                     </div>
                 </div>
-
+            </form>
         </div>
       </div>
     </div>

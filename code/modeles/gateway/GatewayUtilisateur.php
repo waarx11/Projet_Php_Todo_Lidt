@@ -15,7 +15,7 @@ class GatewayUtilisateur
 
     public function inserUser(Utilisateur $user,$mdp)
     {
-        $query = "INSERT INTO UTILISATEUR(id,mail,nom, roleU, mdp) VALUES (:id,:nom,:mail,:roleU,:mdp)";
+        $query = "INSERT INTO UTILISATEUR(id,mail,nom, roleU, mdp) VALUES (:id,:mail,:nom,:roleU,:mdp)";
         //Pas besoin de préciser l'id car il est automatiquement incrémenter.
         if ($this->conx->executeQuery($query, array(
             ':id' => array($user->getId(), PDO::PARAM_STR_CHAR),
@@ -33,20 +33,19 @@ class GatewayUtilisateur
     {
         $query = "SELECT mdp FROM UTILISATEUR WHERE id=:id";
         if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))) {
-                return $this->conx->getResults()[0]['mdp'];
+                  $res=$this->conx->getResults()[0]['mdp'] ?? null;
+                 if($res==null)
+                     throw new Exception("mot de passe invalid");
+                 else{
+                     return $res;
+                 }
+
         } else {
             throw new PDOException("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
         }
+
     }
-    public function isConnected($id):string
-    {
-        $query = "SELECT mdp FROM UTILISATEUR WHERE id=:id";
-        if ($this->conx->executeQuery($query, array(':id' => array($id, PDO::PARAM_STR_CHAR)))) {
-            return $this->conx->getResults()[0]['mdp'];
-        } else {
-            throw new PDOException("Class GatewayUtilisateur getMdpHash : la query n'est pas executable");
-        }
-    }
+
 
     
 }
